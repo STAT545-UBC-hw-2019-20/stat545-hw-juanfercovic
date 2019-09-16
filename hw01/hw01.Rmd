@@ -1,0 +1,48 @@
+---
+title: "Assignment 1"
+author: "JMF"
+date: "16/09/2019"
+bibliography: biblio.bib
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A look into greenhouse gas emissions concentrations
+
+As Solomon2018 
+
+In this document, I explore the concentrations of greenhouse gas emissions using data from the Data Science Lab (dslab). The data measures the concentrations of the three main greenhouse gases carbon dioxide, methane and nitrous oxide. The data was collected from the Law Dome Ice Core in Antarctica. Selected measurements are provided every 20 years from 1 to 2000 CE [@MacFarling2006]
+
+```{r cars}
+summary(cars)
+```
+
+```{r, echo=FALSE}
+library("dslabs")
+data("greenhouse_gases")
+co2=greenhouse_gases[,1:3]
+summary(greenhouse_gases$concentration)
+```
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+library("dslabs")
+library(dplyr)
+library(ggplot2)
+data("greenhouse_gases")
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2")
+ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
+  geom_point() + ggtitle("Concentration of CO2") +
+  xlab("Year") + ylab("ppm") + theme(
+    plot.title = element_text(hjust = 0.5))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
