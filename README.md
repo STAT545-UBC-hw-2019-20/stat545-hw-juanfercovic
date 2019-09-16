@@ -15,7 +15,7 @@ In general, my life can be placed in the following dimensions:
 
 |*My wife and daughter* | *Climbing* | *Study* |
 | --------------------- | ---------- | ------- |
-| My daughter is 2 | I live in Squamish (the mecca here) and commute to campus | I love my research |
+| My daughter is 2. | I live in Squamish (the mecca here) and commute to campus. | I love my research focused on energy consumption and emissions. |
 
 
 My favourite food is ceviche and pasta. or anything
