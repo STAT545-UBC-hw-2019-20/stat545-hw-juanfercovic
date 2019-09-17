@@ -50,7 +50,7 @@ data("greenhouse_gases")
 greenhouse_gases_co2 <- greenhouse_gases %>%
   filter(gas == "CO2", year>1800)
 ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
-  geom_point() + ggtitle("Concentration of CO2 since 1800") +
+  geom_point() + ggtitle("Concentration of CO2 since 1700") +
   xlab("Year") + ylab("ppm") + theme(
     plot.title = element_text(hjust = 0.5))
 ```
