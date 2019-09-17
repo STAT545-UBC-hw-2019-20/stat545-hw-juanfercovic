@@ -2,6 +2,7 @@
 title: "A look into greenhouse gas emissions"
 author: "Juan Fercovic"
 date: "16/09/2019"
+bibliography: biblio.bib
 output:
   beamer_presentation: default
   ioslides_presentation: default
@@ -11,19 +12,22 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## Overview of the presentation
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+- Introduction
+- Summary of the data
+- CO2 emissions in time
+- Adjustment of emissions in the last 200 years
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+## Introduction
 
-## Slide with Bullets
+- Concentrations of CO2 collected from the Law Dome Ice Core in Antarctica [@MacFarling2006].
+- CO2 concentrations measured in parts per million (ppm).
+- Years 0 to 2000.
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
 
-## Slide with R Output
+
+## Summary of the data
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library("dslabs")
@@ -34,9 +38,32 @@ greenhouse_gases_co2 <- greenhouse_gases %>%
 summary(greenhouse_gases_co2)
 ```
 
-## Slide with Plot
+## CO2 emissions in time
 
-```{r pressure}
-plot(pressure)
+```{r, echo=FALSE}
+library("dslabs")
+library(ggplot2)
+data("greenhouse_gases")
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2")
+ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
+  geom_point() + ggtitle("Concentration of CO2") +
+  xlab("Year") + ylab("ppm") + theme(
+    plot.title = element_text(hjust = 0.5))
 ```
 
+
+## Adjustment of emissions in the last 200 years
+
+```{r, echo=FALSE}
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2", year>1800)
+lnconc <-  log(greenhouse_gases_co2$concentration)
+lnyr <-  log(greenhouse_gases_co2$year)
+scatter.smooth(x=greenhouse_gases_co2$year, y=lnconc , ylab="log of ppm of CO2",
+               xlab="Year", main="CO2 emissions since 1800") 
+  
+
+```
+
+## References:

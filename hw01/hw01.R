@@ -58,10 +58,12 @@ greenhouse_gases_co2
 
 scatter.smooth(x=greenhouse_gases_co2$year, y=greenhouse_gases_co2$concentration, main="concentration ~ time")  
 
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2", year>1800)
 lnconc <-  log(greenhouse_gases_co2$concentration)
 lnyr <-  log(greenhouse_gases_co2$year)
-
-scatter.smooth(x=greenhouse_gases_co2$year, y=lnconc, main="concentration ~ time")  
+scatter.smooth(x=greenhouse_gases_co2$year, y=lnconc , ylab="log of ppm of CO2",
+               xlab="Year", main="CO2 emissions since 1800")  
 
 
 greenhouse_gases_co2 <- greenhouse_gases %>%

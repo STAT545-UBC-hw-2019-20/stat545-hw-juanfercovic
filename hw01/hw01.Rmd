@@ -17,6 +17,7 @@ Humans have engaged in large-scale transformation of natural systems for milenni
 In this document, I explore the concentrations of greenhouse gas emissions using data from the Data Science Lab (dslab). The data measures the concentrations of the three main greenhouse gases carbon dioxide, methane and nitrous oxide. The data was collected from the Law Dome Ice Core in Antarctica. Selected measurements are provided every 20 years from 1 to 2000 CE [@MacFarling2006].
 
 
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library("dslabs")
 data("greenhouse_gases")
@@ -46,13 +47,12 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
 If we look closer into the last 300 years, since the industrial revolution in 1800, we can observe how human activity has a cumulative impact that growths exponentially. 
 
 ```{r, echo=FALSE}
-data("greenhouse_gases")
 greenhouse_gases_co2 <- greenhouse_gases %>%
   filter(gas == "CO2", year>1800)
-ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
-  geom_point() + ggtitle("Concentration of CO2 since 1700") +
-  xlab("Year") + ylab("ppm") + theme(
-    plot.title = element_text(hjust = 0.5))
+lnconc <-  log(greenhouse_gases_co2$concentration)
+lnyr <-  log(greenhouse_gases_co2$year)
+scatter.smooth(x=greenhouse_gases_co2$year, y=lnconc , ylab="log of ppm of CO2",
+               xlab="Year", main="CO2 emissions since 1800")
 ```
 
 
