@@ -1,6 +1,6 @@
 ---
 title: "Assignment 1"
-author: "JMF"
+author: "Juan Fercovic"
 date: "16/09/2019"
 bibliography: biblio.bib
 output: pdf_document
@@ -12,19 +12,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## A look into greenhouse gas emissions concentrations
 
-As Solomon2018 
+As Solomon2018 explains humans has engaged in large-scale transformation of natural systems for milennia, but since the industrial era, every home lit by coal or natural gas-fired power plant and every petroleum-powered train, plane, and motor vehicle has contributed to the net accumulatiuon of carbon dioxide (CO2) in the atmosphere.
 
 In this document, I explore the concentrations of greenhouse gas emissions using data from the Data Science Lab (dslab). The data measures the concentrations of the three main greenhouse gases carbon dioxide, methane and nitrous oxide. The data was collected from the Law Dome Ice Core in Antarctica. Selected measurements are provided every 20 years from 1 to 2000 CE [@MacFarling2006]
 
-```{r cars}
-summary(cars)
-```
 
-```{r, echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library("dslabs")
 data("greenhouse_gases")
-co2=greenhouse_gases[,1:3]
-summary(greenhouse_gases$concentration)
+library(dplyr)
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2")
+summary(greenhouse_gases_co2)
 ```
 
 
@@ -34,7 +33,6 @@ In figure 1 (refered this) we can observe the increase of the concentrations of 
 
 ```{r, echo=FALSE}
 library("dslabs")
-library(dplyr)
 library(ggplot2)
 data("greenhouse_gases")
 greenhouse_gases_co2 <- greenhouse_gases %>%
@@ -45,12 +43,9 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
     plot.title = element_text(hjust = 0.5))
 ```
 
-
+If we look closer into the last 200 years where human activity have increase after the industrial revolution, the increase is striking. 
 
 ```{r, echo=FALSE}
-library("dslabs")
-library(dplyr)
-library(ggplot2)
 data("greenhouse_gases")
 greenhouse_gases_co2 <- greenhouse_gases %>%
   filter(gas == "CO2", year>1800)
@@ -59,4 +54,5 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
   xlab("Year") + ylab("ppm") + theme(
     plot.title = element_text(hjust = 0.5))
 ```
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## References:
