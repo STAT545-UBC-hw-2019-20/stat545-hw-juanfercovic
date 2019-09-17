@@ -28,9 +28,9 @@ summary(greenhouse_gases$concentration)
 ```
 
 
-## Including Plots
+## Concentration of CO2 emissions in time
 
-You can also embed plots, for example:
+In figure 1 (refered this) we can observe the increase of the concentrations of CO2 emissions in the last 2000 years. 
 
 ```{r, echo=FALSE}
 library("dslabs")
@@ -45,4 +45,18 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
     plot.title = element_text(hjust = 0.5))
 ```
 
+
+
+```{r, echo=FALSE}
+library("dslabs")
+library(dplyr)
+library(ggplot2)
+data("greenhouse_gases")
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2", year>1800)
+ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
+  geom_point() + ggtitle("Concentration of CO2") +
+  xlab("Year") + ylab("ppm") + theme(
+    plot.title = element_text(hjust = 0.5))
+```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
