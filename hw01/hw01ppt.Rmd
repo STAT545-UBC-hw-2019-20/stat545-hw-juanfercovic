@@ -2,7 +2,9 @@
 title: "A look into greenhouse gas emissions"
 author: "Juan Fercovic"
 date: "16/09/2019"
-output: ioslides_presentation
+output:
+  beamer_presentation: default
+  ioslides_presentation: default
 ---
 
 ```{r setup, include=FALSE}
