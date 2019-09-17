@@ -12,9 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## A look into greenhouse gas emissions concentrations
 
-As Solomon2018 explains humans has engaged in large-scale transformation of natural systems for milennia, but since the industrial era, every home lit by coal or natural gas-fired power plant and every petroleum-powered train, plane, and motor vehicle has contributed to the net accumulatiuon of carbon dioxide (CO2) in the atmosphere.
+Humans have engaged in large-scale transformation of natural systems for milennia, but since the industrial era, every home lit by coal or natural gas-fired power plant and every petroleum-powered train, plane, and motor vehicle has contributed to the net accumulatiuon of carbon dioxide (CO2) in the atmosphere [@Hsiang2018].
 
-In this document, I explore the concentrations of greenhouse gas emissions using data from the Data Science Lab (dslab). The data measures the concentrations of the three main greenhouse gases carbon dioxide, methane and nitrous oxide. The data was collected from the Law Dome Ice Core in Antarctica. Selected measurements are provided every 20 years from 1 to 2000 CE [@MacFarling2006]
+In this document, I explore the concentrations of greenhouse gas emissions using data from the Data Science Lab (dslab). The data measures the concentrations of the three main greenhouse gases carbon dioxide, methane and nitrous oxide. The data was collected from the Law Dome Ice Core in Antarctica. Selected measurements are provided every 20 years from 1 to 2000 CE [@MacFarling2006].
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -43,16 +43,18 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
     plot.title = element_text(hjust = 0.5))
 ```
 
-If we look closer into the last 200 years where human activity have increase after the industrial revolution, the increase is striking. 
+If we look closer into the last 300 years, since the industrial revolution in 1800, we can observe how human activity has a cumulative impact that growths exponentially. 
 
 ```{r, echo=FALSE}
 data("greenhouse_gases")
 greenhouse_gases_co2 <- greenhouse_gases %>%
   filter(gas == "CO2", year>1800)
 ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
-  geom_point() + ggtitle("Concentration of CO2") +
+  geom_point() + ggtitle("Concentration of CO2 since 1800") +
   xlab("Year") + ylab("ppm") + theme(
     plot.title = element_text(hjust = 0.5))
 ```
+
+
 
 ## References:

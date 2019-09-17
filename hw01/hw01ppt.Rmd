@@ -23,8 +23,13 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ## Slide with R Output
 
-```{r cars, echo = TRUE}
-summary(cars)
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library("dslabs")
+data("greenhouse_gases")
+library(dplyr)
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2")
+summary(greenhouse_gases_co2)
 ```
 
 ## Slide with Plot

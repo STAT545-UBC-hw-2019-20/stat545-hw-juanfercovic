@@ -53,6 +53,15 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
 
 
 
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2", year>1700)
+ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
+  stat_smooth(method = 'nls', formula = concentration ~ a*exp(b *year), aes(colour = 'Exponential'), se = FALSE, start = list(a=1,b=1)) + ggtitle("Concentration of CO2") +
+  xlab("Year") + ylab("ppm") + theme(
+    plot.title = element_text(hjust = 0.5))
+
+
+
 #Percent change in concentration of CO2
 greenhouse_gases_co2 <- greenhouse_gases %>%
   filter(gas == "CO2")
