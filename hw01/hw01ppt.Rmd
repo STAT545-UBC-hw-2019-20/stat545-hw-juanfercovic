@@ -1,7 +1,7 @@
 ---
 title: "A look into greenhouse gas emissions"
 author: "Juan Fercovic"
-date: "16/09/2019"
+date: "17/09/2019"
 bibliography: biblio.bib
 output:
   beamer_presentation: default
@@ -56,14 +56,14 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
 ## Adjustment of emissions in the last 200 years
 
 ```{r, echo=FALSE}
+#zoom to 1800 to 2000
 greenhouse_gases_co2 <- greenhouse_gases %>%
   filter(gas == "CO2", year>1800)
-lnconc <-  log(greenhouse_gases_co2$concentration)
-lnyr <-  log(greenhouse_gases_co2$year)
-scatter.smooth(x=greenhouse_gases_co2$year, y=lnconc , ylab="log of ppm of CO2",
-               xlab="Year", main="CO2 emissions since 1800") 
-  
-
+ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
+  geom_point() + ggtitle("Concentration of CO2") +
+  xlab("Year") + ylab("ppm") + theme(
+    plot.title = element_text(hjust = 0.5)) +
+geom_smooth(method = "lm", formula = y ~ poly(x, 3), level=0.95)
 ```
 
 ## References:

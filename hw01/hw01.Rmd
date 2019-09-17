@@ -1,21 +1,27 @@
 ---
 title: "Assignment 1"
 author: "Juan Fercovic"
-date: "16/09/2019"
+date: "17/09/2019"
 bibliography: biblio.bib
 output: pdf_document
+fig_caption: yes
+
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+
 ## A look into greenhouse gas emissions concentrations
 
-Humans have engaged in large-scale transformation of natural systems for milennia, but since the industrial era, every home lit by coal or natural gas-fired power plant and every petroleum-powered train, plane, and motor vehicle has contributed to the net accumulatiuon of carbon dioxide (CO2) in the atmosphere [@Hsiang2018].
+Humans have engaged in large-scale transformation of natural systems for millennia, but since the industrial era, every home lit by coal or natural gas-fired power plant and every petroleum-powered train, plane, and motor vehicle has contributed to the net accumulation of carbon dioxide (CO2) in the atmosphere [@Hsiang2018].
 
-In this document, I explore the concentrations of greenhouse gas emissions using data from the Data Science Lab (dslab). The data measures the concentrations of the three main greenhouse gases carbon dioxide, methane and nitrous oxide. The data was collected from the Law Dome Ice Core in Antarctica. Selected measurements are provided every 20 years from 1 to 2000 CE [@MacFarling2006].
+In this document, I explore the concentrations of greenhouse gas emissions using data from the Data Science Lab (dslab). The data measures the concentrations of the three main greenhouse gases carbon dioxide, methane, and nitrous oxide. The data was collected from the Law Dome Ice Core in Antarctica. Selected measurements are provided every 20 years from 1 to 2000 CE [@MacFarling2006].
 
+In the table below, we can see a very rudimentary description of the data. We can see the variable years from year 20 to 2000 (in jumps of 20) and the variable concentration of CO2 with a variation from 272.3 to 366.8 in the time series.
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -30,9 +36,10 @@ summary(greenhouse_gases_co2)
 
 ## Concentration of CO2 emissions in time
 
-In figure 1 (refered this) we can observe the increase of the concentrations of CO2 emissions in the last 2000 years. 
+In the figure below, we can observe the increase in the concentrations of CO2 emissions in the last 2000 years. We can observe how, since records exist, concentrations of CO2 remained steady until the last 200 year, this beyond simple correlations, have been show to be a direct cause of human activity.
 
-```{r, echo=FALSE}
+
+```{r fig1, echo=FALSE}
 library("dslabs")
 library(ggplot2)
 data("greenhouse_gases")
@@ -44,15 +51,18 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
     plot.title = element_text(hjust = 0.5))
 ```
 
-If we look closer into the last 300 years, since the industrial revolution in 1800, we can observe how human activity has a cumulative impact that growths exponentially. 
+
+If we look closer into the last 200 years, since the industrial revolution in 1800, we can observe how human activity has a cumulative impact that growths exponentially. In the figure below a polynomial of degree 3 adjustment shows a trend that follows the accumulation of CO2 emissions very precisely.
 
 ```{r, echo=FALSE}
+#zoom to 1800 to 2000
 greenhouse_gases_co2 <- greenhouse_gases %>%
   filter(gas == "CO2", year>1800)
-lnconc <-  log(greenhouse_gases_co2$concentration)
-lnyr <-  log(greenhouse_gases_co2$year)
-scatter.smooth(x=greenhouse_gases_co2$year, y=lnconc , ylab="log of ppm of CO2",
-               xlab="Year", main="CO2 emissions since 1800")
+ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
+  geom_point() + ggtitle("Concentration of CO2") +
+  xlab("Year") + ylab("ppm") + theme(
+    plot.title = element_text(hjust = 0.5)) +
+geom_smooth(method = "lm", formula = y ~ poly(x, 3), level=0.95)
 ```
 
 

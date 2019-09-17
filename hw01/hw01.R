@@ -51,6 +51,17 @@ ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
   xlab("Year") + ylab("ppm") + theme(
     plot.title = element_text(hjust = 0.5))
 
+
+
+#zoom to 1800 to 2000
+greenhouse_gases_co2 <- greenhouse_gases %>%
+  filter(gas == "CO2", year>1800)
+ggplot(greenhouse_gases_co2, aes(x = year, y = concentration)) +
+  geom_point() + ggtitle("Concentration of CO2") +
+  xlab("Year") + ylab("ppm") + theme(
+    plot.title = element_text(hjust = 0.5)) +
+geom_smooth(method = "lm", formula = y ~ poly(x, 3), level=0.95)
+
 #display data
 greenhouse_gases_co2
 
