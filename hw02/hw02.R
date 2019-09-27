@@ -9,6 +9,7 @@ library(tidyverse)
 library(dplyr)
 library(magrittr)
 library(qwraps2)
+library(ggplot2)
 gapminder
 
 #1.1
@@ -87,7 +88,33 @@ table_cont <- summary_table(dplyr::group_by(gapminder, continent), summary_lifee
 
 #A scatterplot of two quantitative variables.
 
+#Average Life expectancy in time by continent
+gapminder %>%
+  group_by(continent, year) %>%
+  summarise(lifeExp=mean(lifeExp)) %>%
+  ggplot(aes(x=year, y=lifeExp, color=continent)) +
+  geom_line(size=1) + 
+  geom_point(size=1.5) +
+  facet_wrap(~continent) +
+  theme(legend.position = 'none')
+
+#Life expectancy in time by continent
+gapminder %>%
+ggplot(aes(year, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  theme(legend.position = 'none')
+
+
 #One other plot besides a scatterplot.
+gapminder %>%
+ggplot(aes(x=continent, fill=continent)) + 
+  geom_bar(aes(y=..count../12)) +
+  labs(y="Number of countries") +
+  guides(fill=FALSE)
 
 #4 Recycling
 filter(gapminder, country == c("Rwanda", "Afghanistan"))
