@@ -1,6 +1,8 @@
 ---
 title: "Assignment 2"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 
