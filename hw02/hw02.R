@@ -4,12 +4,15 @@
 #install.packages('tidyverse')
 #install.packages("magrittr")
 #install.packages("qwraps2")
+#install.packages("rmarkdown")
+
 library(gapminder)
 library(tidyverse)
 library(dplyr)
 library(magrittr)
 library(qwraps2)
 library(ggplot2)
+library(rmarkdown)
 
 gapminder
 
@@ -30,12 +33,6 @@ le_drop <- select(gapminder, country, year, continent, lifeExp) %>%
 
 #1.4a max GDP per capita experienced by each country.
 #  Filter gapminder so that it shows the max GDP per capita experienced by each country.
-max_gdp <-
-  select(gapminder, country, year, continent, gdpPercap) %>%
-  group_by(country) %>%
-  summarize(max_gdp_country = max(gdpPercap, na.rm = TRUE)) %>% 
-
-
   gapminder %>%
   select(country, year, continent, gdpPercap) %>%
   arrange(country) %>%
@@ -81,15 +78,13 @@ summary_lifeexp <-
               "sd" = ~ sd(gapminder$lifeExp)),
        "Years" = 
          list("min" = ~ min(gapminder$year),
-              "max" = ~ max(gapminder$year),
-              "N" = ~ add_count(gapminder$year,)))
-
-table <- summary_table(gapminder, summary_lifeexp)
-
+              "max" = ~ max(gapminder$year)
+              ))
 #Overall summary
-table
+summary_table(gapminder, summary_lifeexp)
+
 #Group by Continent
-table_cont <- summary_table(dplyr::group_by(gapminder, continent), summary_lifeexp)
+summary_table(dplyr::group_by(gapminder, continent), summary_lifeexp)
 
 
 
