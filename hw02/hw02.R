@@ -99,8 +99,6 @@ gapminder %>%
   ggplot(aes(x=year, y=lifeExp, color=continent)) +
   geom_line(size=1) + 
   geom_point(size=1.5) +
-  facet_wrap(~continent) +
-  theme(legend.position = 'none')+
   geom_smooth(method="loess")
 
 #Life expectancy in time by continent

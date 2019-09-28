@@ -52,7 +52,7 @@ Filter gapminder so that it shows the max GDP per capita experienced by each cou
 ## 1.5 
 Scatterplot of Canada’s life expectancy vs. GDP per capita using ggplot2
 
-```{r , echo = FALSE}
+```{r , echo = TRUE}
 filter(gapminder, country %in% c("Canada")) %>%
 ggplot(aes(x=log(gdpPercap),y=lifeExp)) + geom_point() 
 ```
@@ -60,7 +60,7 @@ ggplot(aes(x=log(gdpPercap),y=lifeExp)) + geom_point()
 ## 2 
 Explore individual variables with dplyr
 
-```{r gapminder, echo = FALSE}
+```{r gapminder, echo = TRUE}
 #summary table for Life Exp.
 
 summary_lifeexp <-
@@ -82,7 +82,7 @@ summary_table(gapminder, summary_lifeexp)
 ## 2a
 
 Grouped by Continent
-```{r , echo = FALSE}
+```{r , echo = TRUE}
 
 summary_table(dplyr::group_by(gapminder, continent), summary_lifeexp)
 
@@ -91,9 +91,55 @@ summary_table(dplyr::group_by(gapminder, continent), summary_lifeexp)
 
 
 
-## Slide with Plot
+## 3
 
-```{r pressure}
-plot(pressure)
+Average Life expectancy in time by continent
+
+```{r , echo = F}
+gapminder %>%
+  group_by(continent, year) %>%
+  summarise(lifeExp=mean(lifeExp)) %>%
+  ggplot(aes(x=year, y=lifeExp, color=continent)) +
+  geom_line(size=1) + 
+  geom_point(size=1.5) +
+  geom_smooth(method="loess")
+```
+
+
+
+## 3
+Life expectancy of each country in time by continent
+
+```{r , echo = F}
+gapminder %>%
+ggplot(aes(year, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  theme(legend.position = 'none')
+```
+
+
+## 3
+Frequency of contries by continent
+
+```{r , echo = F}
+gapminder %>%
+ggplot(aes(x=continent, fill=continent)) + 
+  geom_bar(aes(y=..count../12)) +
+  labs(y="Number of countries") +
+  guides(fill=FALSE)
+```
+
+
+## 4
+
+This is the correct code. Here %in% instead of == makes the filter to take all elements in country that match the countries Rwanda and Afghanistan
+
+```{r , echo = T}
+filter(gapminder, country %in% c("Rwanda", "Afghanistan"))
+
 ```
 
