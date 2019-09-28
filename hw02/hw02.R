@@ -1,9 +1,9 @@
 #Assignment 2
-install.packages("gapminder")
-install.packages("dplyr")    # alternative installation of the %>%
-install.packages('tidyverse')
-install.packages("magrittr")
-install.packages("qwraps2")
+#install.packages("gapminder")
+#install.packages("dplyr")    # alternative installation of the %>%
+#install.packages('tidyverse')
+#install.packages("magrittr")
+#install.packages("qwraps2")
 library(gapminder)
 library(tidyverse)
 library(dplyr)
@@ -12,10 +12,11 @@ library(qwraps2)
 library(ggplot2)
 gapminder
 
-#1.1
-subset <- filter(gapminder, country %in% c("Canada", "Mexico", "United States"), year > 1969,  year < 1981)
+## 1.1 and 1.2
+#Use filter() to subset the gapminder data to three countries of your choice in the 1970’s.
+#Use the pipe operator %>% to select “country” and “gdpPercap” from your filtered dataset in 1.1.
 
-#1.2
+subset <- filter(gapminder, country %in% c("Canada", "Mexico", "United States"), year > 1969,  year < 1981)
 subset %>% select(country,gdpPercap)
 
 #1.3 all entries that have experienced a drop in life expectancy.
@@ -23,23 +24,30 @@ le_drop <- select(gapminder, country, year, continent, lifeExp) %>%
   group_by(country) %>%
   mutate(le_delta = lifeExp - lag(lifeExp))
   
-  filter(le_drop, le_delta>0)
+  filter(le_drop, le_delta<0)
 
 
 #1.4a max GDP per capita experienced by each country.
+#  Filter gapminder so that it shows the max GDP per capita experienced by each country.
 max_gdp <-
   select(gapminder, country, year, continent, gdpPercap) %>%
   group_by(country) %>%
   summarize(max_gdp_country = max(gdpPercap, na.rm = TRUE)) %>% 
 
 
-#1.4b six rows: the rows with the three largest GDP per capita, and the rows with the three smallest GDP per capita
+  gapminder %>%
+  select(country, year, continent, gdpPercap) %>%
+  arrange(country) %>%
+  group_by(country) %>%
+  top_n(1, wt = desc(gdpPercap)) ## gets the max
 
 
 #1.5 scatterplot of Canada’s life expectancy vs. GDP per capita using ggplot2
-  canada <- filter(gapminder, country %in% c("Canada"))
-ggplot(data=canada,aes(x=log(gdpPercap),y=lifeExp)) + geom_point()  
+  canada <- filter(gapminder, country %in% c("Canada")) 
+ggplot(data=canada, aes(x=log(gdpPercap),y=lifeExp)) + geom_point()  
 
+filter(gapminder, country %in% c("Canada")) %>%
+ggplot(aes(x=log(gdpPercap),y=lifeExp)) + geom_point()
 
 
 #Exercise 2: Explore individual variables with dplyr
@@ -96,7 +104,8 @@ gapminder %>%
   geom_line(size=1) + 
   geom_point(size=1.5) +
   facet_wrap(~continent) +
-  theme(legend.position = 'none')
+  theme(legend.position = 'none')+
+  geom_smooth(method="loess")
 
 #Life expectancy in time by continent
 gapminder %>%
@@ -130,7 +139,26 @@ filter(gapminder, country %in% c("Rwanda", "Afghanistan"))
 
 
 
+mtcar_summaries <-
+  list("Miles Per Gallon" =
+         list("min:"         = ~ min(mpg),
+              "mean (sd)"    = ~ qwraps2::mean_sd(mpg, denote_sd = "paren"),
+              "median (IQR)" = ~ qwraps2::median_iqr(mpg),
+              "max:"         = ~ max(mpg)),
+       "Cylinders:" = 
+         list("mean"             = ~ mean(cyl),
+              "mean (formatted)" = ~ qwraps2::frmt(mean(cyl)),
+              "4 cyl, n (%)"     = ~ qwraps2::n_perc0(cyl == 4),
+              "6 cyl, n (%)"     = ~ qwraps2::n_perc0(cyl == 6),
+              "8 cyl, n (%)"     = ~ qwraps2::n_perc0(cyl == 8)),
+       "Weight" =
+         list("Range" = ~ paste(range(wt), collapse = ", "))
+  )
 
+
+#The table is constructed and printed with ease:
+  
+  summary_table(mtcars, mtcar_summaries)
 
 
 
