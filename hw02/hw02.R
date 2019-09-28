@@ -10,6 +10,7 @@ library(dplyr)
 library(magrittr)
 library(qwraps2)
 library(ggplot2)
+
 gapminder
 
 ## 1.1 and 1.2
@@ -138,27 +139,6 @@ filter(gapminder, country %in% c("Rwanda", "Afghanistan"))
 
 
 
-
-mtcar_summaries <-
-  list("Miles Per Gallon" =
-         list("min:"         = ~ min(mpg),
-              "mean (sd)"    = ~ qwraps2::mean_sd(mpg, denote_sd = "paren"),
-              "median (IQR)" = ~ qwraps2::median_iqr(mpg),
-              "max:"         = ~ max(mpg)),
-       "Cylinders:" = 
-         list("mean"             = ~ mean(cyl),
-              "mean (formatted)" = ~ qwraps2::frmt(mean(cyl)),
-              "4 cyl, n (%)"     = ~ qwraps2::n_perc0(cyl == 4),
-              "6 cyl, n (%)"     = ~ qwraps2::n_perc0(cyl == 6),
-              "8 cyl, n (%)"     = ~ qwraps2::n_perc0(cyl == 8)),
-       "Weight" =
-         list("Range" = ~ paste(range(wt), collapse = ", "))
-  )
-
-
-#The table is constructed and printed with ease:
-  
-  summary_table(mtcars, mtcar_summaries)
 
 
 
