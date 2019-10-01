@@ -1,6 +1,6 @@
 ---
 title: "STAT 545A Assignment 03: dplyr/ggplot2 Part II"
-output: html_notebook
+output: html_document
 ---
 ```{r, warning = FALSE, message = FALSE}
 library(tidyverse)
