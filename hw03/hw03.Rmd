@@ -1,17 +1,20 @@
 ---
 title: 'STAT 545A Assignment 03: dplyr/ggplot2 Part II'
 output:
-  pdf_document: default
+  #pdf_document: default
   html_document: default
 ---
 ```{r, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(ggplot2)
 library(gapminder)
+library(gridExtra)
+library(grid)
+library(spelling)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Instructions
+## Instructions
 Pick three of the six tasks below, and produce:
 
 - a tibble, using dplyr as your data manipulation tool;
@@ -19,66 +22,67 @@ Pick three of the six tasks below, and produce:
 - some dialogue about what your tables/figures show (doesn’t have to be much).
 
 
-# Task Option 1
-Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy – you decide – a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+## The tasks I picked and preamble:
 
-```{r, echo = TRUE}
-gapminder %>%
-  select(country, year, continent, lifeExp) %>%
-  summarise(LE = mean(lifeExp),
-            low = quantile(lifeExp,0.25)) -> threshold
+In this assignment I used the gapminder dataset which contains country data from 1952 to 2007 (12 years) for 142 countries in 5 continents. Specifically, I focused on the variables
+ - GDP percapita (US$, inflation-adjusted) from the World Bank (WB) and
+ - Life Expectancy (years), defined as as the average number of years a newborn child would live if
+current mortality patterns were to stay the same.
 
-gapminder %>%
-  select(country, year, continent, lifeExp) %>%
-  group_by(continent, year) %>%
-  summarise(n_total = n()) %>%
-  filter(lifeExp < low) %>%
-  summarise(n_low = n()) #%>%
-```
-
-
-
-
-
-```{r, echo = TRUE}
-gapminder %>%
-  select(country, year, continent, lifeExp) %>%
-  mutate(n_low = ifelse(lifeExp < quantile(lifeExp,0.25), n(),NA)) %>%
-  group_by(continent, year) %>%
-  summarise(LE = mean(lifeExp),
-            low = quantile(lifeExp,0.25),
-            n_total = n(),
-            n_low = mean(n_low)) #%>%
-
-
-```
-
-# Task Option 2
+## Task Option 2
 Get the maximum and minimum of GDP per capita for all continents.
+
+In the table below, I summarized the minimun and maximun GDP percapita observed in the database by continent. Africa shows the lowest GDP percapita and Asia the highest.
 
 ```{r}
 rangeGdpP <- gapminder %>% 
   group_by(continent) %>% 
   summarize(min_gdpPercap = min(gdpPercap),
-            max_gdpPercap = max(gdpPercap))
+            max_gdpPercap = max(gdpPercap),
+            mean_gdpPercap = mean(gdpPercap))
 rangeGdpP
 ```
+
+
+In the figure below, I create a graph that contains the range for each continent. I included also the average GDP percapita as well. Asia is the continent that shows the wider range of values. 
 
 ```{r}
 ggplot(rangeGdpP) + 
   geom_errorbar(aes(x=continent, ymin=min_gdpPercap, ymax=max_gdpPercap, color=continent, width=.5))  + 
+  geom_point(aes(x=continent, y=mean_gdpPercap)) +
   scale_y_log10() + 
-  ylab("gdpPercap")
+  ylab("GDP percapita") + xlab("Continent")  
 ```
 
 
 
 
-# Task Option 3
+## Task Option 3
 Look at the spread of GDP per capita within the continents.
-```{r}
 
+The table below depicts the variation within each continent about the GDP per capita. As seen in the previous task, Asia presents the higher variation with a standar deviation considerably higher than the rest of the continents.
+
+```{r}
+gapminder %>% 
+group_by(continent) %>% 
+summarize(mean=mean(gdpPercap),
+          min=min(gdpPercap), 
+          max=max(gdpPercap), 
+          std=sd(gdpPercap), 
+          q25=quantile(gdpPercap,0.25), 
+          q50=quantile(gdpPercap, 0.5), 
+          q75=quantile(gdpPercap, 0.75))
 ```
+
+
+The figure below, shows the de
+
+```{r}
+ggplot(gapminder, aes(x=continent, y=gdpPercap)) +
+  geom_boxplot(alpha=0.5, size=1, shape=1,)  + geom_jitter(width = 0.2, aes(colour = year)) +
+  scale_y_log10()
+```
+
 
 # Task Option 4
 Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.
@@ -109,5 +113,45 @@ Find countries with interesting stories. Open-ended and, therefore, hard. Promis
 ```{r}
 
 ```
+
+# Ex
+
+```{r}
+df <- gapminder %>% 
+  # for each continent
+  group_by(continent) %>%  
+  summarize(max = max(gdpPercap), min = min(gdpPercap))
+```
+
+```{r}
+dfplt <- df %>% 
+  ggplot(aes(continent)) + 
+  # plot the points in the same graph and differentiate by color
+  geom_point(aes(y = max, colour = "max")) + 
+  geom_point(aes(y = min, colour = "min")) +  
+  ggtitle("The max and min of GDP per capita for all continents")
+# display the table and graph side by side
+grid.arrange(tableGrob(df), dfplt, nrow = 1)
+```
+
+
+
+
+```{r, echo = TRUE}
+ex <- gapminder %>% 
+group_by(continent) %>% 
+summarize(mean=mean(gdpPercap),
+          std=sd(gdpPercap))
+
+exg <- ex %>%
+  ggplot(aes(continent)) +
+  geom_point(aes(y = mean, colour = "mean")) + 
+  geom_point(aes(y = std, colour = "std")) +  
+  ggtitle("continents")
+
+  grid.arrange(tableGrob(ex), exg, nrow = 1)
+
+```
+
 
 

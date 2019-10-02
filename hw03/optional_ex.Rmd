@@ -1,0 +1,30 @@
+---
+title: "Quicky and dirty: side-by-side plot and table"
+author: "Omar AlOmeir"
+output: 
+  html_document:
+    css: two_columns.css
+---
+
+Code from Omar AlOmeir, posted by Jenny Bryan
+
+See <a href="https://gist.github.com/jennybc/e9e9aba6ba18c72cec26#file-2015-03-02_plot-next-to-table-rmd"  target='_blank'>this Gist</a> for the code.
+See [this RPub](http://rpubs.com/jennybc/plot-next-to-table) for the rendered HTML.
+```{r}
+library(ggplot2)
+suppressMessages(library(dplyr))
+#devtools::install_github("jennybc/gapminder")
+library("gapminder")
+gtbl <- tbl_df(gapminder)
+```
+<div class="twoC">
+```{r results = 'asis', echo=FALSE}
+tbl1 <- gtbl %>%
+  group_by(continent) %>%
+  summarise_each(funs(mean, median), gdpPercap)
+knitr::kable(tbl1)
+```
+```{r echo=FALSE}
+ggplot(gtbl, aes(x = continent, y = gdpPercap, color = continent)) +
+  geom_point() + ggtitle("GDP per cap by continent") 
+```
