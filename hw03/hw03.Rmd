@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Instructions
+
 Pick three of the six tasks below, and produce:
 
 - a tibble, using dplyr as your data manipulation tool;
@@ -24,12 +25,14 @@ Pick three of the six tasks below, and produce:
 
 ## The tasks I picked and preamble:
 
-In this assignment I used the gapminder dataset which contains country data from 1952 to 2007 (12 years) for 142 countries in 5 continents. Specifically, I focused on the variables
+In this assignment I used the gapminder dataset which contains country data from 1952 to 2007 (12 years) for 142 countries in 5 continents. Specifically, I focused on the variables:
+
  - GDP percapita (US$, inflation-adjusted) from the World Bank (WB) and
  - Life Expectancy (years), defined as as the average number of years a newborn child would live if
 current mortality patterns were to stay the same.
 
 ## Task Option 2
+
 Get the maximum and minimum of GDP per capita for all continents.
 
 In the table below, I summarized the minimun and maximun GDP percapita observed in the database by continent. Africa shows the lowest GDP percapita and Asia the highest.
@@ -46,6 +49,7 @@ rangeGdpP
 
 In the figure below, I create a graph that contains the range for each continent. I included also the average GDP percapita as well. Asia is the continent that shows the wider range of values. 
 
+
 ```{r}
 ggplot(rangeGdpP) + 
   geom_errorbar(aes(x=continent, ymin=min_gdpPercap, ymax=max_gdpPercap, color=continent, width=.5))  + 
@@ -55,12 +59,12 @@ ggplot(rangeGdpP) +
 ```
 
 
-
-
 ## Task Option 3
+
 Look at the spread of GDP per capita within the continents.
 
 The table below depicts the variation within each continent about the GDP per capita. As seen in the previous task, Asia presents the higher variation with a standar deviation considerably higher than the rest of the continents.
+
 
 ```{r}
 gapminder %>% 
@@ -75,7 +79,8 @@ summarize(mean=mean(gdpPercap),
 ```
 
 
-The figure below, shows the de
+The figure below, shows the spread of the GDP per capita by continent. The box shows the standard deviation around the average GDP per capita. In the individual country GDP datapoints is possible to see a slight increasing trend in time. This can be observed clearly in Oceania.   
+
 
 ```{r}
 ggplot(gapminder, aes(x=continent, y=gdpPercap)) +
@@ -84,21 +89,22 @@ ggplot(gapminder, aes(x=continent, y=gdpPercap)) +
 ```
 
 
-# Task Option 4
-Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.
-```{r}
+## Task Option 5
 
-```
-
-# Task Option 5
 How is life expectancy changing over time on different continents?
+
+To answer this question I simply calculated the continent yearly average and median Life Expectancy.
+
+
 ```{r}
 gapminder %>%
     group_by(continent, year) %>%
-    summarise(lifeExp=median(lifeExp)) 
+    summarise(median_lifeExp=median(lifeExp),
+              mean_lifeExp=mean(lifeExp)) 
 ```
 
 
+In the graph below, I show how average life expectancy is growing in time. Each continent shows a positive trend.
 
 
 ```{r}
@@ -108,48 +114,27 @@ ggplot(gapminder,
   xlab("Year") + ylab("Avg. Life Expectancy") 
 ```
 
-# Task Option 6
-Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.
-```{r}
 
-```
+## Optional Exercise
 
-# Ex
-
-```{r}
-df <- gapminder %>% 
-  # for each continent
-  group_by(continent) %>%  
-  summarize(max = max(gdpPercap), min = min(gdpPercap))
-```
-
-```{r}
-dfplt <- df %>% 
-  ggplot(aes(continent)) + 
-  # plot the points in the same graph and differentiate by color
-  geom_point(aes(y = max, colour = "max")) + 
-  geom_point(aes(y = min, colour = "min")) +  
-  ggtitle("The max and min of GDP per capita for all continents")
-# display the table and graph side by side
-grid.arrange(tableGrob(df), dfplt, nrow = 1)
-```
-
-
+Table and figure side-by-side. In the table I only show the average GDP to fit both figures side by side.
 
 
 ```{r, echo = TRUE}
 ex <- gapminder %>% 
 group_by(continent) %>% 
 summarize(mean=mean(gdpPercap),
-          std=sd(gdpPercap))
+          min=min(gdpPercap),
+          max=max(gdpPercap))
 
 exg <- ex %>%
   ggplot(aes(continent)) +
   geom_point(aes(y = mean, colour = "mean")) + 
-  geom_point(aes(y = std, colour = "std")) +  
+  geom_point(aes(y = min, colour = "min")) +
+  geom_point(aes(y = max, colour = "max")) +
   ggtitle("continents")
 
-  grid.arrange(tableGrob(ex), exg, nrow = 1)
+  grid.arrange( exg, tableGrob(ex[1:4, 1:2]), nrow = 1, widths = 3:1)
 
 ```
 
