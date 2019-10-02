@@ -3,7 +3,7 @@ title: "hw02"
 author: "JMF"
 date: "27/09/2019"
 output:
-  pdf_document: default
+  #pdf_document: default
   html_document: default
 ---
 
