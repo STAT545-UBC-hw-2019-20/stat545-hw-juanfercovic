@@ -55,13 +55,24 @@ gapminder %>%
 
 # Task Option 2
 Get the maximum and minimum of GDP per capita for all continents.
-```{r, echo = TRUE}
 
-  gapminder %>%
-  select(country, year, continent, gdpPercap) %>%
-  arrange(country) %>%
-  top_n(5, wt = desc(gdpPercap)) ## gets the max
+```{r}
+rangeGdpP <- gapminder %>% 
+  group_by(continent) %>% 
+  summarize(min_gdpPercap = min(gdpPercap),
+            max_gdpPercap = max(gdpPercap))
+rangeGdpP
 ```
+
+```{r}
+ggplot(rangeGdpP) + 
+  geom_errorbar(aes(x=continent, ymin=min_gdpPercap, ymax=max_gdpPercap, color=continent, width=.5))  + 
+  scale_y_log10() + 
+  ylab("gdpPercap")
+```
+
+
+
 
 # Task Option 3
 Look at the spread of GDP per capita within the continents.
@@ -84,14 +95,6 @@ gapminder %>%
 ```
 
 
-```{r}
-gapminder %>%
-    group_by(continent, year) %>%
-    summarise(lifeExp=median(lifeExp)) %>%
-    ggplot(aes(x=year, y=lifeExp, color=continent)) +
-     geom_line(size=1) + 
-     geom_point(size=1.5)
-```
 
 
 ```{r}
