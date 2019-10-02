@@ -21,14 +21,46 @@ Pick three of the six tasks below, and produce:
 
 # Task Option 1
 Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy – you decide – a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
-```{r}
+
+```{r, echo = TRUE}
+gapminder %>%
+  select(country, year, continent, lifeExp) %>%
+  summarise(LE = mean(lifeExp),
+            low = quantile(lifeExp,0.25)) -> threshold
+
+gapminder %>%
+  select(country, year, continent, lifeExp) %>%
+  group_by(continent, year) %>%
+  summarise(n_total = n()) %>%
+  filter(lifeExp < low) %>%
+  summarise(n_low = n()) #%>%
+```
+
+
+
+
+
+```{r, echo = TRUE}
+gapminder %>%
+  select(country, year, continent, lifeExp) %>%
+  mutate(n_low = ifelse(lifeExp < quantile(lifeExp,0.25), n(),NA)) %>%
+  group_by(continent, year) %>%
+  summarise(LE = mean(lifeExp),
+            low = quantile(lifeExp,0.25),
+            n_total = n(),
+            n_low = mean(n_low)) #%>%
+
 
 ```
 
 # Task Option 2
 Get the maximum and minimum of GDP per capita for all continents.
-```{r}
+```{r, echo = TRUE}
 
+  gapminder %>%
+  select(country, year, continent, gdpPercap) %>%
+  arrange(country) %>%
+  top_n(5, wt = desc(gdpPercap)) ## gets the max
 ```
 
 # Task Option 3
@@ -46,7 +78,27 @@ Compute a trimmed mean of life expectancy for different years. Or a weighted mea
 # Task Option 5
 How is life expectancy changing over time on different continents?
 ```{r}
+gapminder %>%
+    group_by(continent, year) %>%
+    summarise(lifeExp=median(lifeExp)) 
+```
 
+
+```{r}
+gapminder %>%
+    group_by(continent, year) %>%
+    summarise(lifeExp=median(lifeExp)) %>%
+    ggplot(aes(x=year, y=lifeExp, color=continent)) +
+     geom_line(size=1) + 
+     geom_point(size=1.5)
+```
+
+
+```{r}
+ggplot(gapminder, 
+       aes(year,lifeExp, colour = continent)) + 
+  geom_smooth() + ggtitle("Life Expextancy over Time by Continent") +
+  xlab("Year") + ylab("Avg. Life Expectancy") 
 ```
 
 # Task Option 6
