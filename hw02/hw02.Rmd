@@ -3,8 +3,8 @@ title: "hw02"
 author: "JMF"
 date: "27/09/2019"
 output:
-  slidy_presentation: default
-  ioslides_presentation: default
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

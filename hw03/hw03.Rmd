@@ -1,12 +1,14 @@
 ---
-title: "STAT 545A Assignment 03: dplyr/ggplot2 Part II"
-output: html_document
+title: 'STAT 545A Assignment 03: dplyr/ggplot2 Part II'
+output:
+  pdf_document: default
+  html_document: default
 ---
 ```{r, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(ggplot2)
 library(gapminder)
-
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Instructions
