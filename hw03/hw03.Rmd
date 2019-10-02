@@ -1,7 +1,7 @@
 ---
 title: 'STAT 545A Assignment 03: dplyr/ggplot2 Part II'
 output:
-  #pdf_document: default
+  pdf_document: default
   html_document: default
 ---
 ```{r, warning = FALSE, message = FALSE}
@@ -14,28 +14,24 @@ library(spelling)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Instructions
-
-Pick three of the six tasks below, and produce:
-
-- a tibble, using dplyr as your data manipulation tool;
-- an accompanying plot of data from the tibble, using ggplot2 as your visualization tool; and
-- some dialogue about what your tables/figures show (doesn’t have to be much).
 
 
-## The tasks I picked and preamble:
+## Introduction:
 
-In this assignment I used the gapminder dataset which contains country data from 1952 to 2007 (12 years) for 142 countries in 5 continents. Specifically, I focused on the variables:
+In this assignment, I used the gapminder dataset which contains country data from 1952 to 2007 (12 years) for 142 countries in 5 continents. Specifically, I focused on the variables:   
 
- - GDP percapita (US$, inflation-adjusted) from the World Bank (WB) and
- - Life Expectancy (years), defined as as the average number of years a newborn child would live if
-current mortality patterns were to stay the same.
+- GDP per capita (US$, inflation-adjusted) from the World Bank (WB) and  
+- Life Expectancy (years), defined as the average number of years a newborn child would live if current mortality patterns were to stay the same.
+
+I chose the tasks 2, 3 and 5
+
 
 ## Task Option 2
 
 Get the maximum and minimum of GDP per capita for all continents.
 
-In the table below, I summarized the minimun and maximun GDP percapita observed in the database by continent. Africa shows the lowest GDP percapita and Asia the highest.
+In the table below, I summarized the minimum and maximum GDP percapita observed in the database by continent. Africa shows the lowest GDP per capita and Asia the highest.
+
 
 ```{r}
 rangeGdpP <- gapminder %>% 
@@ -47,7 +43,7 @@ rangeGdpP
 ```
 
 
-In the figure below, I create a graph that contains the range for each continent. I included also the average GDP percapita as well. Asia is the continent that shows the wider range of values. 
+In the figure below, I create a graph that contains the range for each continent. I included also the average GDP per capita as well. Asia is the continent that shows a wider range of values.  
 
 
 ```{r}
@@ -63,7 +59,7 @@ ggplot(rangeGdpP) +
 
 Look at the spread of GDP per capita within the continents.
 
-The table below depicts the variation within each continent about the GDP per capita. As seen in the previous task, Asia presents the higher variation with a standar deviation considerably higher than the rest of the continents.
+The table below depicts the variation within each continent about the GDP per capita. As seen in the previous task, Asia presents a higher variation with a standard deviation considerably higher than the rest of the continents.
 
 
 ```{r}
@@ -79,7 +75,7 @@ summarize(mean=mean(gdpPercap),
 ```
 
 
-The figure below, shows the spread of the GDP per capita by continent. The box shows the standard deviation around the average GDP per capita. In the individual country GDP datapoints is possible to see a slight increasing trend in time. This can be observed clearly in Oceania.   
+The figure below shows the spread of the GDP per capita by continent. The box shows the standard deviation around the average GDP per capita. In the individual country's GDP data points is possible to see a slight increasing trend in time. This can be observed clearly in Oceania.   
 
 
 ```{r}
@@ -117,7 +113,7 @@ ggplot(gapminder,
 
 ## Optional Exercise
 
-Table and figure side-by-side. In the table I only show the average GDP to fit both figures side by side.
+Table and figure side-by-side. In the table, I only show the average GDP to fit both figures side by side.
 
 
 ```{r, echo = TRUE}
