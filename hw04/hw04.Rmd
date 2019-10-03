@@ -1,0 +1,75 @@
+---
+title: "STAT 545A Assignment 04: Tidy data and joins"
+output:
+  #pdf_document: default
+  html_document: default
+---
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(gapminder)
+library(gridExtra)
+library(grid)
+library(spelling)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 1: Univariate Data Reshaping (30%)
+
+Univariate Option 1:
+1. Make a tibble with one row per year, and columns for life expectancy for two or more countries.
+```{r}
+gapminder %>%
+  filter(country %in% c("Canada", "Mexico", "United States"), year, continent, lifeExp) #%>%
+```
+
+
+2. Take advantage of this new data shape to scatterplot life expectancy for one country against that of another.
+3. Re-lengthen the data.
+
+Univariate Option 2:
+1. Compute some measure of life expectancy (mean? median? min? max?) for all possible combinations of continent and year. 2. 2. Reshape that to have one row per year and one variable for each continent. Or the other way around: one row per continent and one variable per year.
+3. Is there a plot that is easier to make with the data in this shape versis the usual form? Try making such a plot!
+Re-lengthen the data.
+
+## Exercise 2: Multivariate Data Reshaping (30%)
+
+
+## Exercise 3: Table Joins (30%)
+
+```{r}
+guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
+email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
+```
+
+
+## 3.1 (10%)
+For each guest in the guestlist (guest tibble), add a column for email address, which can be found in the email tibble.
+
+
+
+## 3.2 (10%)
+Who do we have emails for, yet are not on the guestlist?
+
+
+## 3.3 (10%)
+Make a guestlist that includes everyone we have emails for (in addition to those on the original guestlist).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
