@@ -1,8 +1,8 @@
 ---
 title: "STAT 545A Assignment 04: Tidy data and joins"
 output:
-  #pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r message=FALSE, warning=FALSE}
@@ -130,7 +130,8 @@ email_list <- email %>%
  * Then I can merge the two files: guest and emails, with guest names as identifier
 ```{r}
 guest %>% 
-  left_join(email_list, by = "name")
+  left_join(email_list, by = "name") %>%
+knitr::kable(align = "c", caption = "Lists merged")
 ```
  
 
@@ -139,7 +140,8 @@ guest %>%
 Who do we have emails for, yet are not on the guestlist?
 ```{r}
 email_list %>%
-  anti_join(guest, by = "name")
+  anti_join(guest, by = "name") %>%
+knitr::kable(align = "c", caption = "With email, but not in the guestlist")
 ```
 
 
@@ -148,7 +150,9 @@ Make a guestlist that includes everyone we have emails for (in addition to those
 
 ```{r}
 guest %>%
-  right_join(email_list, by = "name")
+  right_join(email_list, by = "name") %>%
+knitr::kable(align = "c", caption = "guestlist with everyone's email")
+
 ```
 
 
