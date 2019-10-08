@@ -1,7 +1,7 @@
 ---
 title: "STAT 545A Assignment 04: Tidy data and joins"
 output:
-  #pdf_document: default
+  pdf_document: default
   html_document: default
 ---
 
@@ -146,6 +146,10 @@ email_list %>%
 ## 3.3 (10%)
 Make a guestlist that includes everyone we have emails for (in addition to those on the original guestlist).
 
+```{r}
+guest %>%
+  right_join(email_list, by = "name")
+```
 
 
 
