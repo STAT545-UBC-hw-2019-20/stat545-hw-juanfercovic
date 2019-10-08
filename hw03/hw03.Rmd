@@ -1,8 +1,8 @@
 ---
 title: 'STAT 545A Assignment 03: dplyr/ggplot2 Part II'
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
