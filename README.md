@@ -5,7 +5,7 @@ In this repository I will add all the 5 assignments of the course. Each assignme
 | ----------- | ------------------- |
 | Assignment 01 |	September 17, 2019 |
 | Assignment 02 |	September 24, 2019 |
-| Assignment 03 |	October 01, 2019 |
+| [Assignment 03](https://stat545-ubc-hw-2019-20.github.io/stat545-hw-juanfercovic/hw03/hw03.html) |	October 01, 2019 |
 | [Assignment 04](https://stat545-ubc-hw-2019-20.github.io/stat545-hw-juanfercovic/hw04/hw04.html) |	October 08, 2019 |
 | Assignment 05 |	October 18, 2019 |
 ## Who am I?
