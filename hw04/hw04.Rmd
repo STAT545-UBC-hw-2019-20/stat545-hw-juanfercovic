@@ -19,21 +19,89 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Univariate Option 1:
 1. Make a tibble with one row per year, and columns for life expectancy for two or more countries.
+
+ * Consider the Life expectancy data for North America:
+ 
 ```{r}
-gapminder %>%
-  filter(country %in% c("Canada", "Mexico", "United States"), year, continent, lifeExp) #%>%
+subset <- gapminder %>%
+  filter(country %in% c("Canada", "Mexico", "United States")) %>%
+  select(country, year, lifeExp) 
+
+subset %>%
+   knitr::kable(align = "c", caption = "Life Expectancy Per Year Selected Countries")
+```
+
+ * The following table contains the values of Life expectancy in a different column of each country by years in rows:
+ 
+```{r}
+(subset_wide <- subset %>% 
+  pivot_wider(id_cols = year, 
+              names_from = country, 
+              values_from = lifeExp))
+subset_wide %>%
+   knitr::kable(align = "c", caption = "Life Expectancy Per Year Selected Countries")
 ```
 
 
-2. Take advantage of this new data shape to scatterplot life expectancy for one country against that of another.
-3. Re-lengthen the data.
 
-Univariate Option 2:
-1. Compute some measure of life expectancy (mean? median? min? max?) for all possible combinations of continent and year. 2. 2. Reshape that to have one row per year and one variable for each continent. Or the other way around: one row per continent and one variable per year.
-3. Is there a plot that is easier to make with the data in this shape versis the usual form? Try making such a plot!
-Re-lengthen the data.
+
+2. Take advantage of this new data shape to scatterplot life expectancy for one country against that of another.
+
+```{r}
+(subset_wide %>%
+  ggplot(aes(Canada, Mexico)) +
+  geom_jitter() +
+  geom_smooth(method = "loess") +
+  geom_point() +
+  ggtitle("Canada vs United States life expectancy"))
+
+```
+
+3. Re-lengthen the data.
+```{r}
+subset_wide %>% 
+  pivot_longer(cols = c(-year), 
+               names_to  = "country", 
+               values_to = "LifeExp") %>%
+   knitr::kable(align = "c", caption = "Life Expectancy Per Year Selected Countries")
+
+```
+
+
 
 ## Exercise 2: Multivariate Data Reshaping (30%)
+
+Multivariate Option 1
+1. Make a tibble with one row per year, and columns for life expectancy and GDP per capita (or two other numeric variables) for two or more countries.
+
+```{r}
+subset2 <- gapminder %>%
+  filter(country %in% c("Chile", "Argentina", "Peru")) %>%
+  select(country, year, lifeExp, gdpPercap)
+
+subset2_wide <- subset2  %>%
+   pivot_wider(id_cols     = year, 
+              names_from  = country, 
+              names_sep   = "_", 
+              values_from = c(lifeExp, gdpPercap)) 
+
+subset2_wide %>%
+knitr::kable(align = "c", caption = "Life Expectancy & GDP percapita by Year Selected Countries")
+
+```
+
+
+2. Re-lengthen the data.
+
+```{r}
+(subset2_wide %>% 
+  pivot_longer(cols      = c(-year), 
+               names_to  = c(".value", "country"), 
+               names_sep = "_")) %>%
+knitr::kable(align = "c", caption = "Life Expectancy & GDP percapita by Year Selected Countries")
+```
+
+
 
 
 ## Exercise 3: Table Joins (30%)
@@ -41,16 +109,38 @@ Re-lengthen the data.
 ```{r}
 guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
 email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
+
+guest %>%
+knitr::kable(align = "c", caption = "Guest List")
+email %>%
+knitr::kable(align = "c", caption = "Email List")
 ```
 
 
 ## 3.1 (10%)
-For each guest in the guestlist (guest tibble), add a column for email address, which can be found in the email tibble.
+ 1. For each guest in the guestlist (guest tibble), add a column for email address, which can be found in the email tibble.
 
+ * First I have to fix the guess names in the email file and rename the variable guest to name:
+```{r}
+email_list <- email %>% 
+  separate_rows(guest, sep = ", ") %>% 
+   rename(name = guest)
+```
+
+ * Then I can merge the two files: guest and emails, with guest names as identifier
+```{r}
+guest %>% 
+  left_join(email_list, by = "name")
+```
+ 
 
 
 ## 3.2 (10%)
 Who do we have emails for, yet are not on the guestlist?
+```{r}
+email_list %>%
+  anti_join(guest, by = "name")
+```
 
 
 ## 3.3 (10%)
