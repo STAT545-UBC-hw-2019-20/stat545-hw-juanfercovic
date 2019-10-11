@@ -1,0 +1,236 @@
+---
+title: "STAT 545A Assignment 05: Factor and figure management"
+output:
+  html_document: default
+  #pdf_document: default
+---
+
+```{r message=FALSE, warning=TRUE}
+library(tidyverse)
+library(ggplot2)
+library(gapminder)
+library(gridExtra)
+library(grid)
+library(spelling)
+library(here)
+library(readxl)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Exercise 1: Explain the value of the here::here package (10%)
+
+  Read through the blog post by Malcolm Barrett where he outlines why one should use the here::here package in RStudio projects. Task: In your own words, summarize the value of the here::here package in 250 words or fewer.
+
+```{r}
+
+
+ghg = here::here("hw05","data", "ghgcanada.xlsx")
+  
+read_excel(ghg)
+
+
+
+```
+
+
+## Exercise 2: Factor management (20%)
+
+Task: Choose one dataset (of your choice) and a variable to explore. After ensuring the variable(s) you’re exploring are indeed factors, you should:
+
+Drop factor / levels;
+  1. Reorder levels based on knowledge from data.
+  2. We’ve elaborated on these steps for the gapminder and singer data sets below.
+
+The dataset I will explore is the data from Fercovic and Gulati (2016) about CMA consumption of gasoline, electricity and natural gas from 1997-2009
+
+
+```{r}
+ghg <- read_excel(here::here("hw05", "data", "ghgcanada.xlsx"), trim_ws = TRUE)
+
+ghg$cma %>% 
+class()
+ghg$province %>% 
+class()
+
+#both cma and province are not factor so I will turn them into factors:
+ghg$cma <- factor(ghg$cma)
+ghg$province <- factor(ghg$province)
+```
+
+I can see if the variable cma is a factor with the following command:
+
+```{r}
+ghg$cma %>% 
+class()
+ghg$province %>% 
+class()
+```
+
+And describe the CMAs as factors in the following figure:
+```{r}
+ghg %>%
+  ggplot() +
+  geom_bar(aes(fct_reorder(cma, electric_price))) + 
+  coord_flip()+
+  theme_bw() +
+  ylab("Av. Electricity consumption KwH") + xlab("Census Metropolitan Area")
+```
+
+We can also create levels of the variable price of electricity:
+
+```{r}
+ggplot(ghg, aes(year, electric_price)) +
+  geom_point(alpha = 0.2) +
+  scale_x_log10(labels = scales::comma_format()) +
+  #facet_wrap(~province, scales = "free") + # this scale argument lets x and y axes be different for each plot
+   ylab("Av. Electricity Price cents/KwH") + xlab("Year")
+```
+
+
+```{r}
+ghg %>% 
+  mutate(electric_price_level = factor(case_when(lifeExp < 23 ~ 'very low',
+                                lifeExp < 48 ~ 'low',
+                                lifeExp < 59 ~ 'moderate',
+                                lifeExp < 70 ~ 'high',
+                                TRUE ~ 'very high'),
+                             levels = c("very low", "low", "moderate", "high", "very high"))) %>% 
+  ggplot() + geom_boxplot(aes(x = life_level, y = gdpPercap)) +
+  labs(y = "GDP per capita, $", x= "Life expectancy level, years") +
+  theme_bw()  + 
+  scale_x_discrete(drop=FALSE) #makes that the value we dont have info shows in the graph
+```
+
+
+Explore the effects of re-leveling a factor in a tibble by:
+
+  1. comparing the results of arrange on the original and re-leveled factor.
+  2. Plotting a figure of before/after re-leveling the factor (make sure to assign the factor to an aesthetic of your choosing).
+  
+  Ask if the info below this question is to chose the datasets
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+## Exercise 3: File input/output (I/O) (20%)
+
+Task: Experiment with at least one of:
+  * write_csv()/read_csv() (and/or TSV friends),
+  * saveRDS()/readRDS(),
+  * dput()/dget().
+You are expected to create something new, probably by filtering or grouped-summarization of your dataset (for e.g., Singer, Gapminder, or another dataset), export it to disk and then reload it back in using one of the packages above. You should use here::here() for reading in and writing out.
+
+With the imported data, play around with factor levels and use factors to order your data with one of your factors (i.e. non-alphabetically). For the I/O method(s) you chose, comment on whether or not your newly created file survived the round trip of writing to file then reading back in.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Exercise 4: Visualization design (20%)
+
+Go back through your previous assignments and class participation activities and find figures you created prior to the last week of the course. Recreate at least one figure in light of something you learned in the recent class meetings about visualization design and color.
+
+Task: Create a side-by-side plot and juxtapose your first attempt (show the original figure as-is) with a revised attempt after some time spent working on it and implementing principles of effective plotting principles. Comment and reflect on the differences.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Exercise 5: Writing figures to file (10%)
+
+Task: Use ggsave() to explicitly save a plot to file. Include the exported plot as part of your repository and assignment.
+
+Then, use `![Alt text](/path/to/img.png)` to load and embed that file into your report. You can play around with various options, such as:
+
+  * Arguments of ggsave(), such as width, height, resolution or text scaling.
+  * Various graphics devices, e.g. a vector vs. raster format.
+  * Explicit provision of the plot object p via ggsave(..., plot = p). Show a situation in which this actually matters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
