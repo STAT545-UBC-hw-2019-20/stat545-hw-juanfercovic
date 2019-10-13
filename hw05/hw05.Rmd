@@ -67,19 +67,34 @@ ghg$province %>%
 class()
 ```
 
+And describe the Provinces as factors in the following figure:
+```{r}
+ghg %>%
+  ggplot() +
+  geom_bar(aes(fct_infreq(province))) + 
+  coord_flip()+
+  theme_bw() +
+  ylab("Nr. of entries") + xlab("Province")
+```
+
 And describe the CMAs as factors in the following figure:
 ```{r}
 ghg %>%
   ggplot() +
-  geom_bar(aes(fct_reorder(cma, electric_price))) + 
+  geom_bar(aes(fct_infreq(cma))) + 
   coord_flip()+
   theme_bw() +
-  ylab("Av. Electricity consumption KwH") + xlab("Census Metropolitan Area")
+  ylab("Nr. of entries") + xlab("Census Metropolitan Areas")
 ```
-
 We can also create levels of the variable price of electricity:
 
+ - First I will look at the variation of prices by province and overall:
 ```{r}
+ggplot(ghg, aes(year, electric_price)) +
+  geom_point(alpha = 0.2) +
+  scale_x_log10(labels = scales::comma_format()) +
+  facet_wrap(~province, scales = "free") + # this scale argument lets x and y axes be different for each plot
+   ylab("Av. Electricity Price cents/KwH") + xlab("Year")
 ggplot(ghg, aes(year, electric_price)) +
   geom_point(alpha = 0.2) +
   scale_x_log10(labels = scales::comma_format()) +
@@ -87,17 +102,16 @@ ggplot(ghg, aes(year, electric_price)) +
    ylab("Av. Electricity Price cents/KwH") + xlab("Year")
 ```
 
-
+Then I will select a few thresholds to create 3 levels of prices. I will illustrate the levels plotting Electricity consumption against the price in levels. As observed in the figure below, consumption is inversely correlated to prices.
 ```{r}
 ghg %>% 
-  mutate(electric_price_level = factor(case_when(lifeExp < 23 ~ 'very low',
-                                lifeExp < 48 ~ 'low',
-                                lifeExp < 59 ~ 'moderate',
-                                lifeExp < 70 ~ 'high',
-                                TRUE ~ 'very high'),
-                             levels = c("very low", "low", "moderate", "high", "very high"))) %>% 
-  ggplot() + geom_boxplot(aes(x = life_level, y = gdpPercap)) +
-  labs(y = "GDP per capita, $", x= "Life expectancy level, years") +
+  mutate(electric_price_level = factor(case_when(electric_price < 7.5 ~ 'low',
+                                electric_price < 10 ~ 'moderate',
+                                electric_price < 12.5 ~ 'high',
+                                TRUE ~ 'high'),
+                             levels = c("low", "moderate", "high"))) %>% 
+  ggplot() + geom_boxplot(aes(x = electric_price_level, y = Qelectricity)) +
+  labs(y = "Electricity Cons. KwH", x= "Electricity price cents/KwH") +
   theme_bw()  + 
   scale_x_discrete(drop=FALSE) #makes that the value we dont have info shows in the graph
 ```
@@ -108,10 +122,33 @@ Explore the effects of re-leveling a factor in a tibble by:
   1. comparing the results of arrange on the original and re-leveled factor.
   2. Plotting a figure of before/after re-leveling the factor (make sure to assign the factor to an aesthetic of your choosing).
   
-  Ask if the info below this question is to chose the datasets
+Here I will add more levels to the variable electricity price:
+
+```{r}
+ghg %>% 
+  mutate(electric_price_level = factor(case_when(electric_price < 7.5 ~ 'very low',
+                                electric_price < 10 ~ 'low',
+                                electric_price < 12.5 ~ 'moderate',
+                                electric_price < 15 ~ 'high',
+                                TRUE ~ 'very high'),
+                             levels = c("very low", "low", "moderate", "high", "very high"))) %>% 
+  ggplot() + geom_boxplot(aes(x = electric_price_level, y = Qelectricity)) +
+  labs(y = "Electricity Cons. KwH", x= "Electricity price cents/KwH") +
+  theme_bw()  + 
+  scale_x_discrete(drop=FALSE) #makes that the value we dont have info shows in the graph
+```
+
+
+  Also I will re-organize the factor for some CMAs. Let's say I would like to start the list with the CMAs in British Columbia: Vancouver and Victoria:
   
-  
-  
+```{r}
+ghg %>%
+  ggplot() +
+  geom_bar(aes(fct_relevel(cma, "Vancouver", "Victoria"))) + 
+  coord_flip()+
+  theme_bw() +
+  ylab("Nr. of entries") + xlab("Census Metropolitan Areas")
+```
   
   
   
