@@ -14,6 +14,8 @@ library(grid)
 library(spelling)
 library(here)
 library(readxl)
+library(gridExtra)
+library(grid)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -216,7 +218,7 @@ Task: Create a side-by-side plot and juxtapose your first attempt (show the orig
 For this task I will use the scatterplot ofvlife expectancy in time by continent from 'cm002' 
 
 ```{r}
-gapminder %>%
+oldg <- gapminder %>%
 ggplot(aes(year, lifeExp, size = pop, colour = country)) +
   geom_point(alpha = 0.7) +
   scale_colour_manual(values = country_colors) +
@@ -225,7 +227,30 @@ ggplot(aes(year, lifeExp, size = pop, colour = country)) +
   facet_wrap(~continent) +
   theme(legend.position = 'none')
 
+
+#My improved version is as follows:
+
+newg <- gapminder %>%
+  ggplot(aes(year,lifeExp)) + 
+        geom_point(alpha = 0.3) + 
+        geom_smooth(method = "lm", se = T,  formula = y ~ poly(I(x-1952), degree = 2)) +
+        facet_wrap(~continent)
+
+
+  grid.arrange(oldg, newg, nrow = 1)
+
 ```
+
+
+
+```{r}
+newg <- gapminder %>%
+  ggplot(aes(year,lifeExp)) + 
+        geom_point(alpha = 0.3) + 
+        geom_smooth(method = "lm", se = T,  formula = y ~ poly(I(x-1952), degree = 2)) +
+        facet_wrap(~continent)
+```
+
 
 
 
@@ -250,6 +275,22 @@ ggplot(aes(year, lifeExp_average)) +
 
 
 
+```{r}
+ex <- gapminder %>% 
+group_by(continent) %>% 
+summarize(mean=mean(gdpPercap),
+          min=min(gdpPercap),
+          max=max(gdpPercap))
+
+exg <- ex %>%
+  ggplot(aes(continent)) +
+  geom_point(aes(y = mean, colour = "mean")) + 
+  geom_point(aes(y = min, colour = "min")) +
+  geom_point(aes(y = max, colour = "max")) +
+  ggtitle("continents")
+
+  grid.arrange( exg, tableGrob(ex[1:4, 1:2]), nrow = 1, widths = 3:1)
+```
 
 
 
