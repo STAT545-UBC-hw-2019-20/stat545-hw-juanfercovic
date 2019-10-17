@@ -1,0 +1,1633 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={STAT 545A Assignment 05: Factor and figure management},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{STAT 545A Assignment 05: Factor and figure management}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(gapminder)}
+\KeywordTok{library}\NormalTok{(gridExtra)}
+\KeywordTok{library}\NormalTok{(grid)}
+\KeywordTok{library}\NormalTok{(spelling)}
+\KeywordTok{library}\NormalTok{(here)}
+\KeywordTok{library}\NormalTok{(readxl)}
+\KeywordTok{library}\NormalTok{(gridExtra)}
+\KeywordTok{library}\NormalTok{(grid)}
+\NormalTok{knitr}\OperatorTok{::}\NormalTok{opts_chunk}\OperatorTok{$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{exercise-1-explain-the-value-of-the-herehere-package-10}{%
+\subsection{Exercise 1: Explain the value of the here::here package
+(10\%)}\label{exercise-1-explain-the-value-of-the-herehere-package-10}}
+
+Read through the blog post by Malcolm Barrett where he outlines why one
+should use the here::here package in RStudio projects. Task: In your own
+words, summarize the value of the here::here package in 250 words or
+fewer.
+
+The great advantage of the `here::here' package comes from the ability
+to define directories and read files in them without the necessity of
+writing explicitly the exact address to the folder, which is conditional
+to the operative system (ie: MAC or Windows), but only giving
+information about the folder names and files. This way of setting a
+directory is extremely powerful since the researcher only needs to pay
+attention to have a consistency in the folder names and the file names.
+This makes an R code very easy to be shared.
+
+Also, when you load the `here' package (ie: `library(here)'),
+automatically the directory is being set where the Rmd file is saved.
+This is handy because most of the times, a researcher will decide a
+particular folder in his computer to save the code and datasets, which
+most likely will be a complete different path is another researcher
+would choose when saving the same files. But, within the folder where
+the key files are saved there should be consistency in the organization
+across researchers (ie: all should have a subfolder called `data' to
+store datasets. This makes even more important the `here::here' package
+because you can define ``agnostically'' the names of the folders where,
+for example, a particular dataset is.
+
+In the following code, I showed how to read the dataset from Fercovic
+and Gulati (2006), using the `here::here' package. I will keep using
+this dataset in exercise 2 and 3.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(here}\OperatorTok{::}\KeywordTok{here}\NormalTok{(}\StringTok{"hw05"}\NormalTok{, }\StringTok{"data"}\NormalTok{, }\StringTok{"ghgcanada.xlsx"}\NormalTok{), }\DataTypeTok{trim_ws =} \OtherTok{TRUE}\NormalTok{)}
+
+\NormalTok{ghg}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 187 x 16
+##    cma    year province Qgasoline   Qng Qelectricity electric_price
+##    <chr> <dbl> <chr>        <dbl> <dbl>        <dbl>          <dbl>
+##  1 Calg~  1997 Alberta      2534. 3316.        6063.           7.13
+##  2 Calg~  1998 Alberta      2789. 4053.       10761.           7.02
+##  3 Calg~  1999 Alberta      2557. 3502.        7947.           7.13
+##  4 Calg~  2000 Alberta      2506. 3383.        9230.           7.58
+##  5 Calg~  2001 Alberta      2437. 2502.        9358.           8.51
+##  6 Calg~  2002 Alberta      2878. 3331.        9094.          10.2 
+##  7 Calg~  2003 Alberta      2415. 2849.        8127.          10.4 
+##  8 Calg~  2004 Alberta      2275. 3162.        9175.           9.62
+##  9 Calg~  2006 Alberta      2350. 2898.        9714.          10.8 
+## 10 Calg~  2007 Alberta      2537. 2605.        7997.          12.5 
+## # ... with 177 more rows, and 9 more variables: gas_price <dbl>,
+## #   p_reggasoline_SSFS <dbl>, gasemi <dbl>, elecemi <dbl>, ngemi <dbl>,
+## #   income <dbl>, avhhsi <dbl>, age <dbl>, hdd <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#ghg %>%}
+ \CommentTok{# DT::datatable()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{exercise-2-factor-management-20}{%
+\subsection{Exercise 2: Factor management
+(20\%)}\label{exercise-2-factor-management-20}}
+
+Task: Choose one dataset (of your choice) and a variable to explore.
+After ensuring the variable(s) you're exploring are indeed factors, you
+should:
+
+Drop factor / levels; 1. Reorder levels based on knowledge from data. 2.
+We've elaborated on these steps for the gapminder and singer data sets
+below.
+
+The dataset I will explore is the data from Fercovic and Gulati (2016)
+about CMA consumption, prices and CO2 emissions of gasoline, electricity
+and natural gas respectively, from 1997-2009. In exercise 1, I used
+`here::here' to locate the file. Here I will just call it by his name:
+`ghg'
+
+In the next code, 2 variables that are characters I convert them in
+factors:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg}\OperatorTok{$}\NormalTok{cma }\OperatorTok{%>%}\StringTok{ }
+\KeywordTok{class}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg}\OperatorTok{$}\NormalTok{province }\OperatorTok{%>%}\StringTok{ }
+\KeywordTok{class}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#both cma and province are not factor so I will turn them into factors:}
+\NormalTok{ghg}\OperatorTok{$}\NormalTok{cma <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(ghg}\OperatorTok{$}\NormalTok{cma)}
+\NormalTok{ghg}\OperatorTok{$}\NormalTok{province <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(ghg}\OperatorTok{$}\NormalTok{province)}
+\end{Highlighting}
+\end{Shaded}
+
+I can see if the variable cma is a factor with the following command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg}\OperatorTok{$}\NormalTok{cma }\OperatorTok{%>%}\StringTok{ }
+\KeywordTok{class}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "factor"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg}\OperatorTok{$}\NormalTok{province }\OperatorTok{%>%}\StringTok{ }
+\KeywordTok{class}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "factor"
+\end{verbatim}
+
+First, I will show the variable Province as a Factor, and describe the
+frequency of observations by Province in the following bar chart:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\KeywordTok{fct_infreq}\NormalTok{(province))) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Nr. of entries"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Province"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Second, I will do the same exercise with the variable that describes the
+Census Metropolitan Areas (cma), but now I will compare the total CO2
+emissions from gasoline consumption across CMAs:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{cma, }\DataTypeTok{y=}\NormalTok{gasemi)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat=}\StringTok{"identity"}\NormalTok{, }\DataTypeTok{width=}\FloatTok{0.5}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Nr. of entries"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Av. CO2 emissions from gasoline onsumption"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 1 rows containing missing values (position_stack).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted
+## for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted
+## for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted
+## for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for
+## <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for
+## <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for
+## <bd>
+\end{verbatim}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+Third, I will create levels of numerical variables. To do so, I will use
+the variable price of electricity.
+
+\begin{itemize}
+\tightlist
+\item
+  First I will look at the variation of prices by province and overall,
+  to define the ranges for the levels:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(ghg, }\KeywordTok{aes}\NormalTok{(year, electric_price)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{(}\DataTypeTok{labels =}\NormalTok{ scales}\OperatorTok{::}\KeywordTok{comma_format}\NormalTok{()) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{province, }\DataTypeTok{scales =} \StringTok{"free"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\CommentTok{# this scale argument lets x and y axes be different for each plot}
+\StringTok{   }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Av. Electricity Price cents/KwH"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Year"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(ghg, }\KeywordTok{aes}\NormalTok{(year, electric_price)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{(}\DataTypeTok{labels =}\NormalTok{ scales}\OperatorTok{::}\KeywordTok{comma_format}\NormalTok{()) }\OperatorTok{+}
+\StringTok{  }\CommentTok{#facet_wrap(~province, scales = "free") + # this scale argument lets x and y axes be different for each plot}
+\StringTok{   }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Av. Electricity Price cents/KwH"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Year"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-7-2.pdf}
+
+\begin{itemize}
+\tightlist
+\item
+  Second, I will select a few thresholds to create 3 levels of prices. I
+  will illustrate the levels plotting Electricity consumption against
+  the price in levels. As observed in the figure below, consumption is
+  inversely correlated to prices:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{electric_price_level =} \KeywordTok{factor}\NormalTok{(}\KeywordTok{case_when}\NormalTok{(electric_price }\OperatorTok{<}\StringTok{ }\FloatTok{7.5} \OperatorTok{~}\StringTok{ 'low'}\NormalTok{,}
+\NormalTok{                                electric_price }\OperatorTok{<}\StringTok{ }\DecValTok{10} \OperatorTok{~}\StringTok{ 'moderate'}\NormalTok{,}
+\NormalTok{                                electric_price }\OperatorTok{<}\StringTok{ }\FloatTok{12.5} \OperatorTok{~}\StringTok{ 'high'}\NormalTok{,}
+                                \OtherTok{TRUE} \OperatorTok{~}\StringTok{ 'high'}\NormalTok{),}
+                             \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"low"}\NormalTok{, }\StringTok{"moderate"}\NormalTok{, }\StringTok{"high"}\NormalTok{))) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ electric_price_level, }\DataTypeTok{y =}\NormalTok{ Qelectricity)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Electricity Cons. KwH"}\NormalTok{, }\DataTypeTok{x=} \StringTok{"Electricity price cents/KwH"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_bw}\NormalTok{()  }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_discrete}\NormalTok{(}\DataTypeTok{drop=}\OtherTok{FALSE}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+Explore the effects of re-leveling a factor in a tibble by:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  comparing the results of arrange on the original and re-leveled
+  factor.
+\item
+  Plotting a figure of before/after re-leveling the factor (make sure to
+  assign the factor to an aesthetic of your choosing).
+\end{enumerate}
+
+First, I will add more levels to the variable electricity price. I will
+include 2 more levels to the ones created previously. As shown in the
+figure below, 5 levels can capture better the variation of consumption,
+especially in the moderate and high level. Note, the range is much
+closer to the median compared to the moderate level in the previous
+arrangement. There is still considerable variation in the lower levels
+of price.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{electric_price_level =} \KeywordTok{factor}\NormalTok{(}\KeywordTok{case_when}\NormalTok{(electric_price }\OperatorTok{<}\StringTok{ }\FloatTok{7.5} \OperatorTok{~}\StringTok{ 'very low'}\NormalTok{,}
+\NormalTok{                                electric_price }\OperatorTok{<}\StringTok{ }\DecValTok{10} \OperatorTok{~}\StringTok{ 'low'}\NormalTok{,}
+\NormalTok{                                electric_price }\OperatorTok{<}\StringTok{ }\FloatTok{12.5} \OperatorTok{~}\StringTok{ 'moderate'}\NormalTok{,}
+\NormalTok{                                electric_price }\OperatorTok{<}\StringTok{ }\DecValTok{15} \OperatorTok{~}\StringTok{ 'high'}\NormalTok{,}
+                                \OtherTok{TRUE} \OperatorTok{~}\StringTok{ 'very high'}\NormalTok{),}
+                             \DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"very low"}\NormalTok{, }\StringTok{"low"}\NormalTok{, }\StringTok{"moderate"}\NormalTok{, }\StringTok{"high"}\NormalTok{, }\StringTok{"very high"}\NormalTok{))) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ electric_price_level, }\DataTypeTok{y =}\NormalTok{ Qelectricity)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Electricity Cons. KwH"}\NormalTok{, }\DataTypeTok{x=} \StringTok{"Electricity price cents/KwH"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_bw}\NormalTok{()  }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_discrete}\NormalTok{(}\DataTypeTok{drop=}\OtherTok{FALSE}\NormalTok{) }\CommentTok{#makes that the value we dont have info shows in the graph}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+Second, I will manually re-organize the factor organization for some
+CMAs. Let's say I would like to start the list with the CMAs in British
+Columbia: Vancouver and Victoria, then the graph below, shows how a
+simple re-level of factors allows to change the order of the CMAs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\KeywordTok{fct_relevel}\NormalTok{(cma, }\StringTok{"Vancouver"}\NormalTok{, }\StringTok{"Victoria"}\NormalTok{))) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Nr. of entries"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Census Metropolitan Areas"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted
+## for <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted
+## for <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Montr�al' in 'mbcsToSbcs': dot substituted
+## for <bd>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for
+## <ef>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for
+## <bf>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : conversion failure on 'Qu�bec' in 'mbcsToSbcs': dot substituted for
+## <bd>
+\end{verbatim}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\hypertarget{exercise-3-file-inputoutput-io-20}{%
+\subsection{Exercise 3: File input/output (I/O)
+(20\%)}\label{exercise-3-file-inputoutput-io-20}}
+
+Task: Experiment with at least one of: * write\_csv()/read\_csv()
+(and/or TSV friends), * saveRDS()/readRDS(), * dput()/dget(). You are
+expected to create something new, probably by filtering or
+grouped-summarization of your dataset (for e.g., Singer, Gapminder, or
+another dataset), export it to disk and then reload it back in using one
+of the packages above. You should use here::here() for reading in and
+writing out.
+
+With the imported data, play around with factor levels and use factors
+to order your data with one of your factors (i.e.~non-alphabetically).
+For the I/O method(s) you chose, comment on whether or not your newly
+created file survived the round trip of writing to file then reading
+back in.
+
+I will keep using the data from Fercovic and Gulati (2006) for this
+task, which I imported in exercise 1 using `here::here'
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  I have imported the data in exercise 1 using `read\_excel'. From the
+  file I called ``ghg'', I will summarize the CMA data in the averages
+  of the sample years and the save it in `csv' format. Then, I show how
+  the file can be read back into the code.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ghg }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(cma, year, province, gasemi, elecemi, ngemi) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(cma) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{gasemi_mean =} \KeywordTok{mean}\NormalTok{(gasemi),}
+            \DataTypeTok{gasemi_sd =} \KeywordTok{sd}\NormalTok{(gasemi),}
+            \DataTypeTok{elecemi_mean =} \KeywordTok{mean}\NormalTok{(elecemi),}
+            \DataTypeTok{elecemi_sd =} \KeywordTok{sd}\NormalTok{(elecemi)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{write_csv}\NormalTok{(}\StringTok{"ghg_sum.csv"}\NormalTok{)}
+  
+
+
+  \KeywordTok{read_csv}\NormalTok{(}\StringTok{"ghg_sum.csv"}\NormalTok{, }\DataTypeTok{col_names =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{col_types =} \OtherTok{NULL}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   cma = col_character(),
+##   gasemi_mean = col_double(),
+##   gasemi_sd = col_double(),
+##   elecemi_mean = col_double(),
+##   elecemi_sd = col_double()
+## )
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 17 x 5
+##    cma           gasemi_mean gasemi_sd elecemi_mean elecemi_sd
+##    <chr>               <dbl>     <dbl>        <dbl>      <dbl>
+##  1 Calgary              5.43     0.536       7.19      0.956  
+##  2 Charlottetown        5.37     0.341       0.158     0.00950
+##  3 Edmonton             5.89     0.561       9.32      0.846  
+##  4 Halifax              4.92     0.384       9.27      0.404  
+##  5 Montr�al            NA       NA          NA        NA      
+##  6 Ottawa               4.94     0.297       0.964     0.0529 
+##  7 Qu�bec               5.22     0.265       0.0581    0.00120
+##  8 Regina               5.22     0.315       6.58      0.222  
+##  9 Saint John           6.31     0.313      11.6       0.259  
+## 10 Saskatoon            5.27     0.365       7.67      0.459  
+## 11 St. John's           4.87     0.324       0.397     0.00924
+## 12 Toronto              4.97     0.433       0.782     0.0698 
+## 13 Vancouver            4.82     0.556       0.400     0.0145 
+## 14 Victoria             4.41     0.408       0.455     0.00924
+## 15 Whitehorse           5.55     0.314       0.438     0.0200 
+## 16 Winnipeg             5.03     0.448       0.0754    0.00196
+## 17 Yellowknife          3.75     0.343       2.76      0.275
+\end{verbatim}
+
+\hypertarget{exercise-4-visualization-design-20}{%
+\subsection{Exercise 4: Visualization design
+(20\%)}\label{exercise-4-visualization-design-20}}
+
+Go back through your previous assignments and class participation
+activities and find figures you created prior to the last week of the
+course. Recreate at least one figure in light of something you learned
+in the recent class meetings about visualization design and color.
+
+Task: Create a side-by-side plot and juxtapose your first attempt (show
+the original figure as-is) with a revised attempt after some time spent
+working on it and implementing principles of effective plotting
+principles. Comment and reflect on the differences.
+
+For this task, I will use the scatterplot of life expectancy in time by
+continent, that I created in `cm002'. the graph is poor in terms of
+effective plotting. My objective was to show the change in time of Life
+Expectancy by continent, reflecting the variation withing each continent
+(and given by the different countries). But the graph is too crowded
+with information, the colors are not very explicative and the population
+size of the datapoints doesn't add more informations. Also, the axis
+names should be self explicative.
+
+The second graph shows a revised version. Here I used a polynomial
+adjustment to show the trend of Life expectancy in time, I graphed also
+the standard errors of the model to show the variation of the
+predictors. I still plotted in the graph the observations, but now in a
+mild grayscale that allows the reader to observe the variation of the
+data without losing attention to the trends. Finally, I improved the
+labels to make the graph self explicative. I only kept one year for
+reverence in the x-axis for 2 reasons. First, because it enough to see
+broadly the period of the data, and secondly, because I wanted to use
+`grid.arrange' and to do so, I wanted to compress the information in
+that axis to be clear with the 2 graphs in the same space.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oldg <-}\StringTok{ }\NormalTok{gapminder }\OperatorTok{%>%}
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(year, lifeExp, }\DataTypeTok{size =}\NormalTok{ pop, }\DataTypeTok{colour =}\NormalTok{ country)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_colour_manual}\NormalTok{(}\DataTypeTok{values =}\NormalTok{ country_colors) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_size}\NormalTok{(}\DataTypeTok{range =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{12}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{continent) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{'none'}\NormalTok{)}
+
+\NormalTok{oldg}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#My improved version is as follows:}
+
+\NormalTok{newg <-}\StringTok{ }\NormalTok{gapminder }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(year,lifeExp)) }\OperatorTok{+}\StringTok{ }
+\StringTok{        }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.1}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{() }\OperatorTok{+}
+\StringTok{        }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{se =}\NormalTok{ T,  }\DataTypeTok{formula =}\NormalTok{ y }\OperatorTok{~}\StringTok{ }\KeywordTok{poly}\NormalTok{(}\KeywordTok{I}\NormalTok{(x}\DecValTok{-1952}\NormalTok{), }\DataTypeTok{degree =} \DecValTok{2}\NormalTok{)) }\OperatorTok{+}
+\StringTok{        }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{continent)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Life Expectancy"}\NormalTok{)}
+
+\NormalTok{newg}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-12-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \KeywordTok{grid.arrange}\NormalTok{(oldg, newg, }\DataTypeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{hw05_files/figure-latex/unnamed-chunk-12-3.pdf}
+
+\hypertarget{exercise-5-writing-figures-to-file-10}{%
+\subsection{Exercise 5: Writing figures to file
+(10\%)}\label{exercise-5-writing-figures-to-file-10}}
+
+Task: Use ggsave() to explicitly save a plot to file. Include the
+exported plot as part of your repository and assignment.
+
+Then, use \texttt{!{[}Alt\ text{]}(/path/to/img.png)} to load and embed
+that file into your report. You can play around with various options,
+such as:
+
+\begin{itemize}
+\tightlist
+\item
+  Arguments of ggsave(), such as width, height, resolution or text
+  scaling.
+\item
+  Various graphics devices, e.g.~a vector vs.~raster format.
+\item
+  Explicit provision of the plot object p via ggsave(\ldots{}, plot =
+  p). Show a situation in which this actually matters.
+\end{itemize}
+
+For this exercise, I will use the figures from exercise 4. The figure I
+wanted to save in first place is the one improved in the previous
+exercise. I save it with a width of 10 inches and a printing quality
+resolution (dpi=300). I also use the `plot' option to call the figure I
+want to save by the name I give it when I create it. This is handy
+because I don't need to re-create the figure to save it, and I can just
+invoke `ggsave(,plot=``plotname'')' and specify the name of the figure I
+want to save. I do that by saving the old figure using the `plot'
+option:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{newg <-}\StringTok{ }\NormalTok{gapminder }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(year,lifeExp)) }\OperatorTok{+}\StringTok{ }
+\StringTok{        }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.3}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{        }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{se =}\NormalTok{ T,  }\DataTypeTok{formula =}\NormalTok{ y }\OperatorTok{~}\StringTok{ }\KeywordTok{poly}\NormalTok{(}\KeywordTok{I}\NormalTok{(x}\DecValTok{-1952}\NormalTok{), }\DataTypeTok{degree =} \DecValTok{2}\NormalTok{)) }\OperatorTok{+}
+\StringTok{        }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{continent)}
+
+\KeywordTok{ggsave}\NormalTok{(}\DataTypeTok{file=}\StringTok{"newg.png"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{10}\NormalTok{, }\DataTypeTok{dpi =} \DecValTok{300}\NormalTok{, }\DataTypeTok{device =} \StringTok{"jpeg"}\NormalTok{, }\DataTypeTok{plot =}\NormalTok{ newg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Saving 10 x 4.5 in image
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggsave}\NormalTok{(}\DataTypeTok{file=}\StringTok{"oldg.png"}\NormalTok{, }\DataTypeTok{width =} \DecValTok{10}\NormalTok{, }\DataTypeTok{dpi =} \DecValTok{300}\NormalTok{, }\DataTypeTok{device =} \StringTok{"jpeg"}\NormalTok{, }\DataTypeTok{plot =}\NormalTok{ oldg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Saving 10 x 4.5 in image
+\end{verbatim}
+
+
+\end{document}

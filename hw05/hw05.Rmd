@@ -1,8 +1,9 @@
 ---
 title: "STAT 545A Assignment 05: Factor and figure management"
+author: "Juan Fercovic"
 output:
-  html_document: default
   #pdf_document: default
+  html_document: default
 ---
 
 ```{r message=FALSE, warning=TRUE}
@@ -23,20 +24,33 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Exercise 1: Explain the value of the here::here package (10%)
 
   Read through the blog post by Malcolm Barrett where he outlines why one should use the here::here package in RStudio projects. Task: In your own words, summarize the value of the here::here package in 250 words or fewer.
+ 
+ 
   
-  The great advantage of the 'here::here' package comes from the hability to define directories and read files in them without the necessity of wtriting explicitly the exact address to the folder, which is conditional to the operative system (ie: MAC or Windows), but only give information about the folder names and files. This way of setting a directory is extremely powerful since the researcher's only needs to pay attention to have a consistency in the folder names and the file names. This makes an R code very easy to be shared.
-  Also, when you load the 'here' package (ie: 'library(here)'), is automatically setting the directory where your Rmd file is saved. This really handy because usually each researcher will decide a particular folder in his computer to save the code and datasets.
+  The great advantage of the 'here::here' package comes from the ability to define directories and read files in them without the necessity of writing explicitly the exact address to the folder, which is conditional to the operative system (ie: MAC or Windows), but only giving information about the folder names and files. This way of setting a directory is extremely powerful since the researcher only needs to pay attention to have a consistency in the folder names and the file names. This makes an R code very easy to be shared.
   
+  Also, when you load the 'here' package (ie: 'library(here)'),  automatically the directory is being set where the Rmd file is saved. This is handy because most of the times, a researcher will decide a particular folder in his computer to save the code and datasets, which most likely will be a complete different path is another researcher would choose when saving the same files. But, within the folder where the key files are saved there should be consistency in the organization across researchers (ie: all should have a subfolder called 'data' to store datasets. This makes even more important the 'here::here' package because you can define "agnostically" the names of the folders where, for example, a particular dataset is.
+  
+
+In the following code, I showed how to read the dataset from Fercovic and Gulati (2006), using the 'here::here' package. I will keep using this dataset in exercise 2 and 3.
+
 
 ```{r}
 ghg <- read_excel(here::here("hw05", "data", "ghgcanada.xlsx"), trim_ws = TRUE)
 
-ghg
-#ghg %>%
-#  DT::datatable()
+#ghg
+ghg %>%
+ DT::datatable()
 
 
 ```
+
+
+
+
+
+
+
 
 
 ## Exercise 2: Factor management (20%)
@@ -47,8 +61,11 @@ Drop factor / levels;
   1. Reorder levels based on knowledge from data.
   2. We’ve elaborated on these steps for the gapminder and singer data sets below.
 
-The dataset I will explore is the data from Fercovic and Gulati (2016) about CMA consumption of gasoline, electricity and natural gas from 1997-2009
 
+The dataset I will explore is the data from Fercovic and Gulati (2016) about CMA consumption, prices and CO2 emissions of gasoline, electricity and natural gas respectively, from 1997-2009. In exercise 1, I used 'here::here' to locate the file. Here I will just call it by his name: 'ghg'
+
+
+In the next code, 2 variables that are characters I convert them in factors:
 
 ```{r}
 ghg$cma %>% 
@@ -71,7 +88,10 @@ ghg$province %>%
 class()
 ```
 
-And describe the Provinces as factors in the following figure:
+
+First, I will show the variable Province as a Factor, and describe the frequency of observations by Province in the following bar chart:
+
+
 ```{r}
 ghg %>%
   ggplot() +
@@ -81,7 +101,10 @@ ghg %>%
   ylab("Nr. of entries") + xlab("Province")
 ```
 
-And describe the CMAs as factors in the following figure:
+
+Second, I will do the same exercise with the variable that describes the Census Metropolitan Areas (cma), but now I will compare the total CO2 emissions from gasoline consumption across CMAs:
+
+
 ```{r}
 ghg %>%
   ggplot(aes(x=cma, y=gasemi)) +
@@ -91,9 +114,12 @@ ghg %>%
   ylab("Nr. of entries") + xlab("Av. CO2 emissions from gasoline onsumption")
 
 ```
-We can also create levels of the variable price of electricity:
 
- - First I will look at the variation of prices by province and overall:
+
+Third, I will create levels of numerical variables. To do so, I will use the variable price of electricity.
+
+ - First I will look at the variation of prices by province and overall, to define the ranges for the levels:
+ 
 ```{r}
 ggplot(ghg, aes(year, electric_price)) +
   geom_point(alpha = 0.2) +
@@ -107,7 +133,9 @@ ggplot(ghg, aes(year, electric_price)) +
    ylab("Av. Electricity Price cents/KwH") + xlab("Year")
 ```
 
-Then I will select a few thresholds to create 3 levels of prices. I will illustrate the levels plotting Electricity consumption against the price in levels. As observed in the figure below, consumption is inversely correlated to prices.
+ - Second, I will select a few thresholds to create 3 levels of prices. I will illustrate the levels plotting Electricity consumption against the price in levels. As observed in the figure below, consumption is inversely correlated to prices:
+ 
+ 
 ```{r}
 ghg %>% 
   mutate(electric_price_level = factor(case_when(electric_price < 7.5 ~ 'low',
@@ -118,16 +146,24 @@ ghg %>%
   ggplot() + geom_boxplot(aes(x = electric_price_level, y = Qelectricity)) +
   labs(y = "Electricity Cons. KwH", x= "Electricity price cents/KwH") +
   theme_bw()  + 
-  scale_x_discrete(drop=FALSE) #makes that the value we dont have info shows in the graph
+  scale_x_discrete(drop=FALSE) 
 ```
+
+
+
+
+
 
 
 Explore the effects of re-leveling a factor in a tibble by:
 
   1. comparing the results of arrange on the original and re-leveled factor.
   2. Plotting a figure of before/after re-leveling the factor (make sure to assign the factor to an aesthetic of your choosing).
-  
-Here I will add more levels to the variable electricity price:
+
+
+
+First, I will add more levels to the variable electricity price. I will include 2 more levels to the ones created previously. As shown in the figure below, 5 levels can capture better the variation of consumption, especially in the moderate and high level. Note, the range is much closer to the median compared to the moderate level in the previous arrangement. There is still considerable variation in the lower levels of price.
+
 
 ```{r}
 ghg %>% 
@@ -144,7 +180,8 @@ ghg %>%
 ```
 
 
-  Also I will re-organize the factor for some CMAs. Let's say I would like to start the list with the CMAs in British Columbia: Vancouver and Victoria:
+Second, I will manually re-organize the factor organization for some CMAs. Let's say I would like to start the list with the CMAs in British Columbia: Vancouver and Victoria, then the graph below, shows how a simple re-level of factors allows to change the order of the CMAs.
+
   
 ```{r}
 ghg %>%
@@ -177,9 +214,9 @@ You are expected to create something new, probably by filtering or grouped-summa
 With the imported data, play around with factor levels and use factors to order your data with one of your factors (i.e. non-alphabetically). For the I/O method(s) you chose, comment on whether or not your newly created file survived the round trip of writing to file then reading back in.
 
 
-I will keep using the data from Fercovic and Gulati (2006) for this task. 
+I will keep using the data from Fercovic and Gulati (2006) for this task, which I imported in exercise 1 using 'here::here'
 
-1 I have imported the data in exercise 1 using 'read_excel'. From this file I called "ghg", I will summarize the CMA data in the averages of the sample years and the save in other formats
+  1. I have imported the data in exercise 1 using 'read_excel'. From the file I called "ghg", I will summarize the CMA data in the averages of the sample years and the save it in 'csv' format. Then, I show how the file can be read back into the code.
 
 ```{r}
 ghg %>%
@@ -189,11 +226,11 @@ ghg %>%
             gasemi_sd = sd(gasemi),
             elecemi_mean = mean(elecemi),
             elecemi_sd = sd(elecemi)) %>%
-  write.csv(file = "ghg_sum.csv",row.names=FALSE)
+  write_csv("ghg_sum.csv")
   
 
 
-read_csv("ghg_sum.csv", col_names = TRUE, col_types = NULL)
+  read_csv("ghg_sum.csv", col_names = TRUE, col_types = NULL)
 ```
 
 
@@ -215,7 +252,12 @@ Go back through your previous assignments and class participation activities and
 
 Task: Create a side-by-side plot and juxtapose your first attempt (show the original figure as-is) with a revised attempt after some time spent working on it and implementing principles of effective plotting principles. Comment and reflect on the differences.
 
-For this task I will use the scatterplot ofvlife expectancy in time by continent from 'cm002' 
+
+
+  For this task, I will use the scatterplot of life expectancy in time by continent, that I created in 'cm002'. the graph is poor in terms of effective plotting. My objective was to show the change in time of Life Expectancy by continent, reflecting the variation withing each continent (and given by the different countries). But the graph is too crowded with information, the colors are not very explicative and the population size of the datapoints doesn't add more informations. Also, the axis names should be self explicative.
+
+The second graph shows a revised version. Here I used a polynomial adjustment to show the trend of Life expectancy in time, I graphed also the standard errors of the model to show the variation of the predictors. I still plotted in the graph the observations, but now in a mild grayscale that allows the reader to observe the variation of the data without losing attention to the trends. Finally, I improved the labels to make the graph self explicative. I only kept one year for reverence in the x-axis for 2 reasons. First, because it enough to see broadly the period of the data, and secondly, because I wanted to use 'grid.arrange' and to do so, I wanted to compress the information in that axis to be clear with the 2 graphs in the same space. 
+
 
 ```{r}
 oldg <- gapminder %>%
@@ -227,71 +269,24 @@ ggplot(aes(year, lifeExp, size = pop, colour = country)) +
   facet_wrap(~continent) +
   theme(legend.position = 'none')
 
+oldg
 
 #My improved version is as follows:
 
 newg <- gapminder %>%
   ggplot(aes(year,lifeExp)) + 
-        geom_point(alpha = 0.3) + 
+        geom_point(alpha = 0.1) + 
+  scale_x_log10() +
         geom_smooth(method = "lm", se = T,  formula = y ~ poly(I(x-1952), degree = 2)) +
-        facet_wrap(~continent)
+        facet_wrap(~continent)+
+  ylab("Life Expectancy")
+
+newg
 
 
-  grid.arrange(oldg, newg, nrow = 1)
-
-```
-
-
-
-```{r}
-newg <- gapminder %>%
-  ggplot(aes(year,lifeExp)) + 
-        geom_point(alpha = 0.3) + 
-        geom_smooth(method = "lm", se = T,  formula = y ~ poly(I(x-1952), degree = 2)) +
-        facet_wrap(~continent)
-```
-
-
-
-
-```{r}
-gapminder %>%
-  group_by(continent, year) %>%
-   summarise(lifeExp_average = mean(lifeExp), 
-      lifeExp_sd = sd(lifeExp)) %>%
-ggplot(aes(year, lifeExp_average)) +
-  geom_errorbar(ymin=lifeExp_average-ci, ymax=lifeExp_average+ci, width=.1, position=pd) +
-  #geom_boxplot() +
-  geom_point(alpha = 0.7) +
- # scale_colour_manual(values = country_colors) +
-  scale_size(range = c(2, 12)) +
-  #scale_x_log10() +
-  facet_wrap(~continent) +
-  theme(legend.position = 'none')+
-  theme_classic()
+  grid.arrange(oldg, newg, ncol = 2)
 
 ```
-
-
-
-
-```{r}
-ex <- gapminder %>% 
-group_by(continent) %>% 
-summarize(mean=mean(gdpPercap),
-          min=min(gdpPercap),
-          max=max(gdpPercap))
-
-exg <- ex %>%
-  ggplot(aes(continent)) +
-  geom_point(aes(y = mean, colour = "mean")) + 
-  geom_point(aes(y = min, colour = "min")) +
-  geom_point(aes(y = max, colour = "max")) +
-  ggtitle("continents")
-
-  grid.arrange( exg, tableGrob(ex[1:4, 1:2]), nrow = 1, widths = 3:1)
-```
-
 
 
 
@@ -310,11 +305,24 @@ Then, use `![Alt text](/path/to/img.png)` to load and embed that file into your 
   * Explicit provision of the plot object p via ggsave(..., plot = p). Show a situation in which this actually matters.
 
 
+For this exercise, I will use the figures from exercise 4. The figure I wanted to save in first place is the one improved in the previous exercise. I save it with a width of 10 inches and a printing quality resolution (dpi=300). I also use the 'plot' option to call the figure I want to save by the name I give it when I create it. This is handy because I don't need to re-create the figure to save it, and I can just invoke 'ggsave(,plot="plotname")' and specify the name of the figure I want to save. I do that by saving the old figure using the 'plot' option:
 
 
+```{r}
+newg <- gapminder %>%
+  ggplot(aes(year,lifeExp)) + 
+        geom_point(alpha = 0.3) + 
+        geom_smooth(method = "lm", se = T,  formula = y ~ poly(I(x-1952), degree = 2)) +
+        facet_wrap(~continent)
+
+ggsave(file="newg.png", width = 10, dpi = 300, device = "jpeg", plot = newg)
+
+ggsave(file="oldg.png", width = 10, dpi = 300, device = "jpeg", plot = oldg)
 
 
-ggsave(file="myplot.png")
+```
+
+
 
 
 
