@@ -112,7 +112,7 @@ gapminder %>%
 ## 3
 Life expectancy of each country in time by continent
 
-```{r , echo = F}
+```{r}
 gapminder %>%
 ggplot(aes(year, lifeExp, size = pop, colour = country)) +
   geom_point(alpha = 0.7) +
@@ -127,7 +127,7 @@ ggplot(aes(year, lifeExp, size = pop, colour = country)) +
 ## 3
 Frequency of contries by continent
 
-```{r , echo = F}
+```{r}
 gapminder %>%
 ggplot(aes(x=continent, fill=continent)) + 
   geom_bar(aes(y=..count../12)) +
@@ -140,7 +140,7 @@ ggplot(aes(x=continent, fill=continent)) +
 
 This is the correct code. Here %in% instead of == makes the filter to take all elements in country that match the countries Rwanda and Afghanistan
 
-```{r , echo = T}
+```{r}
 filter(gapminder, country %in% c("Rwanda", "Afghanistan"))
 
 ```

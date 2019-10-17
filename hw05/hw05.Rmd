@@ -21,14 +21,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Exercise 1: Explain the value of the here::here package (10%)
 
   Read through the blog post by Malcolm Barrett where he outlines why one should use the here::here package in RStudio projects. Task: In your own words, summarize the value of the here::here package in 250 words or fewer.
+  
+  The great advantage of the 'here::here' package comes from the hability to define directories and read files in them without the necessity of wtriting explicitly the exact address to the folder, which is conditional to the operative system (ie: MAC or Windows), but only give information about the folder names and files. This way of setting a directory is extremely powerful since the researcher's only needs to pay attention to have a consistency in the folder names and the file names. This makes an R code very easy to be shared.
+  Also, when you load the 'here' package (ie: 'library(here)'), is automatically setting the directory where your Rmd file is saved. This really handy because usually each researcher will decide a particular folder in his computer to save the code and datasets.
+  
 
 ```{r}
+ghg <- read_excel(here::here("hw05", "data", "ghgcanada.xlsx"), trim_ws = TRUE)
 
-
-ghg = here::here("hw05","data", "ghgcanada.xlsx")
-  
-read_excel(ghg)
-
+ghg
+#ghg %>%
+#  DT::datatable()
 
 
 ```
@@ -46,8 +49,6 @@ The dataset I will explore is the data from Fercovic and Gulati (2016) about CMA
 
 
 ```{r}
-ghg <- read_excel(here::here("hw05", "data", "ghgcanada.xlsx"), trim_ws = TRUE)
-
 ghg$cma %>% 
 class()
 ghg$province %>% 
@@ -58,11 +59,12 @@ ghg$cma <- factor(ghg$cma)
 ghg$province <- factor(ghg$province)
 ```
 
+
 I can see if the variable cma is a factor with the following command:
 
 ```{r}
 ghg$cma %>% 
-class()
+class() 
 ghg$province %>% 
 class()
 ```
@@ -80,11 +82,12 @@ ghg %>%
 And describe the CMAs as factors in the following figure:
 ```{r}
 ghg %>%
-  ggplot() +
-  geom_bar(aes(fct_infreq(cma))) + 
+  ggplot(aes(x=cma, y=gasemi)) +
+  geom_bar(stat="identity", width=0.5) + 
   coord_flip()+
   theme_bw() +
-  ylab("Nr. of entries") + xlab("Census Metropolitan Areas")
+  ylab("Nr. of entries") + xlab("Av. CO2 emissions from gasoline onsumption")
+
 ```
 We can also create levels of the variable price of electricity:
 
@@ -172,6 +175,24 @@ You are expected to create something new, probably by filtering or grouped-summa
 With the imported data, play around with factor levels and use factors to order your data with one of your factors (i.e. non-alphabetically). For the I/O method(s) you chose, comment on whether or not your newly created file survived the round trip of writing to file then reading back in.
 
 
+I will keep using the data from Fercovic and Gulati (2006) for this task. 
+
+1 I have imported the data in exercise 1 using 'read_excel'. From this file I called "ghg", I will summarize the CMA data in the averages of the sample years and the save in other formats
+
+```{r}
+ghg %>%
+  select(cma, year, province, gasemi, elecemi, ngemi) %>%
+  group_by(cma) %>%
+  summarise(gasemi_mean = mean(gasemi),
+            gasemi_sd = sd(gasemi),
+            elecemi_mean = mean(elecemi),
+            elecemi_sd = sd(elecemi)) %>%
+  write.csv(file = "ghg_sum.csv",row.names=FALSE)
+  
+
+
+read_csv("ghg_sum.csv", col_names = TRUE, col_types = NULL)
+```
 
 
 
@@ -192,10 +213,39 @@ Go back through your previous assignments and class participation activities and
 
 Task: Create a side-by-side plot and juxtapose your first attempt (show the original figure as-is) with a revised attempt after some time spent working on it and implementing principles of effective plotting principles. Comment and reflect on the differences.
 
+For this task I will use the scatterplot ofvlife expectancy in time by continent from 'cm002' 
+
+```{r}
+gapminder %>%
+ggplot(aes(year, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  theme(legend.position = 'none')
+
+```
 
 
 
+```{r}
+gapminder %>%
+  group_by(continent, year) %>%
+   summarise(lifeExp_average = mean(lifeExp), 
+      lifeExp_sd = sd(lifeExp)) %>%
+ggplot(aes(year, lifeExp_average)) +
+  geom_errorbar(ymin=lifeExp_average-ci, ymax=lifeExp_average+ci, width=.1, position=pd) +
+  #geom_boxplot() +
+  geom_point(alpha = 0.7) +
+ # scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  #scale_x_log10() +
+  facet_wrap(~continent) +
+  theme(legend.position = 'none')+
+  theme_classic()
 
+```
 
 
 
@@ -223,7 +273,7 @@ Then, use `![Alt text](/path/to/img.png)` to load and embed that file into your 
 
 
 
-
+ggsave(file="myplot.png")
 
 
 
